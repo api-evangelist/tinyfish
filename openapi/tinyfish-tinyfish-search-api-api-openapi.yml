@@ -1,0 +1,480 @@
+openapi: 3.0.0
+info:
+  title: TinyFish Browser Automation TinyFish Search API API
+  version: 1.0.0
+  description: Create remote browser sessions for direct Playwright/CDP control.
+  contact:
+    name: TinyFish Support
+    email: support@tinyfish.ai
+servers:
+- url: https://api.browser.tinyfish.ai
+tags:
+- name: TinyFish Search API
+paths:
+  /:
+    get:
+      operationId: search
+      summary: Search the web
+      description: 'Search the web and get structured results. Returns ranked results with titles, snippets, and URLs.
+
+
+        **Location and language resolution:**
+
+        - If `location` is set but `language` is not, the language auto-resolves to the most predominantly used language in that country.
+
+        - If `language` is set but `location` is not, the location auto-resolves to the country where that language is most predominantly used.
+
+        - If neither `location` nor `language` is set, defaults to `us` and `en`.'
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+          description: Search query
+          example: web automation tools
+        required: true
+        description: Search query
+        name: query
+        in: query
+      - schema:
+          type: string
+          description: Country code for geo-targeted results
+          example: US
+        required: false
+        description: Country code for geo-targeted results
+        name: location
+        in: query
+      - schema:
+          type: string
+          description: Language code for result language
+          example: en
+        required: false
+        description: Language code for result language
+        name: language
+        in: query
+      responses:
+        '200':
+          description: Search completed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                    description: The search query that was executed
+                    example: web automation tools
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        position:
+                          type: integer
+                          description: Position in search results
+                          example: 1
+                        site_name:
+                          type: string
+                          description: Site name
+                          example: example.com
+                        snippet:
+                          type: string
+                          description: Text snippet from the result
+                          example: This is an example snippet...
+                        title:
+                          type: string
+                          description: Page title
+                          example: Example Page
+                        url:
+                          type: string
+                          format: uri
+                          description: Result URL
+                          example: https://example.com/page
+                      required:
+                      - position
+                      - site_name
+                      - snippet
+                      - title
+                      - url
+                      description: A single search result
+                    description: Array of search results
+                  total_results:
+                    type: integer
+                    description: Total number of results
+                    example: 10
+                required:
+                - query
+                - results
+                - total_results
+                description: Search response with results
+              example:
+                query: web automation tools
+                results:
+                - position: 1
+                  site_name: example.com
+                  snippet: Top web automation tools for 2026...
+                  title: Best Web Automation Tools
+                  url: https://example.com/web-automation-tools
+                total_results: 10
+        '400':
+          description: Invalid request - missing or invalid query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '402':
+          description: Payment required - active subscription or credits required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '403':
+          description: Forbidden - Search API access is not enabled for this account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: Search API is not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '503':
+          description: Search service unavailable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+      tags:
+      - TinyFish Search API
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication. Get your key from the API Keys page.

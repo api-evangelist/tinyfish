@@ -1,0 +1,355 @@
+openapi: 3.0.0
+info:
+  title: TinyFish Browser Automation TinyFish Fetch API API
+  version: 1.0.0
+  description: Create remote browser sessions for direct Playwright/CDP control.
+  contact:
+    name: TinyFish Support
+    email: support@tinyfish.ai
+servers:
+- url: https://api.browser.tinyfish.ai
+tags:
+- name: TinyFish Fetch API
+paths:
+  /:
+    post:
+      operationId: fetchUrls
+      summary: Fetch and extract content from URLs
+      description: Renders web pages using a real browser (including JavaScript-heavy sites) and returns clean extracted content in your preferred format. Submit up to 10 URLs, get back structured content. Per-URL failures appear in `errors[]` and do not fail the entire request.
+      security:
+      - ApiKeyAuth: []
+      requestBody:
+        description: URLs to fetch and extraction options
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                  minItems: 1
+                  maxItems: 10
+                  description: Array of URLs to fetch (1-10). All URLs are fetched in parallel. Each URL is processed independently — if one fails, others still return successfully. Errors are reported per-URL in the errors array.
+                  example:
+                  - https://example.com
+                  - https://example.org
+                format:
+                  type: string
+                  enum:
+                  - markdown
+                  - html
+                  - json
+                  default: markdown
+                  description: Output format for extracted content. "markdown" (default) is ideal for LLM consumption. "html" returns cleaned semantic HTML. "json" returns a structured document tree.
+                  example: markdown
+                links:
+                  type: boolean
+                  default: false
+                  description: Extract all outbound links (<a href>) from each page. Useful for discovering related pages or navigating to specific content. Links are returned as absolute URLs in the links array of each result.
+                  example: false
+                image_links:
+                  type: boolean
+                  default: false
+                  description: Extract all image URLs (<img src>) from each page. Useful for finding visual content or media assets. Image links are returned as absolute URLs in the image_links array of each result.
+                  example: false
+              required:
+              - urls
+      responses:
+        '200':
+          description: Fetch completed. Check `errors[]` for any per-URL failures.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: Original requested URL
+                          example: https://example.com
+                        final_url:
+                          type: string
+                          nullable: true
+                          description: Final URL after redirects
+                          example: https://www.example.com
+                        title:
+                          type: string
+                          nullable: true
+                          description: Page title
+                          example: Example Domain
+                        description:
+                          type: string
+                          nullable: true
+                          description: Page meta description
+                          example: This domain is for use in illustrative examples.
+                        language:
+                          type: string
+                          nullable: true
+                          description: Detected language code
+                          example: en
+                        format:
+                          type: string
+                          enum:
+                          - markdown
+                          - html
+                          - json
+                          description: Format of the extracted text
+                          example: markdown
+                        text:
+                          anyOf:
+                          - type: string
+                          - {}
+                          - nullable: true
+                          description: Extracted content (string for markdown/html, object for json). Null if extraction failed.
+                        author:
+                          type: string
+                          nullable: true
+                          description: Page author if available
+                          example: John Doe
+                        published_date:
+                          type: string
+                          nullable: true
+                          description: Published date if available
+                          example: '2024-01-15'
+                        links:
+                          type: array
+                          items:
+                            type: string
+                          description: Extracted links (only if links=true in request)
+                        image_links:
+                          type: array
+                          items:
+                            type: string
+                          description: Extracted image links (only if image_links=true in request)
+                        latency_ms:
+                          type: number
+                          nullable: true
+                          description: Fetch latency for this URL in milliseconds if available from tf-fetch
+                          example: 1183.4
+                      required:
+                      - url
+                      - final_url
+                      - title
+                      - description
+                      - language
+                      - format
+                      - text
+                      - author
+                      - published_date
+                      description: A successfully fetched URL result
+                    description: Successfully fetched URLs
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: URL that failed to fetch
+                          example: https://invalid.example.com
+                        error:
+                          type: string
+                          description: Error message describing the failure
+                          example: Failed to fetch resource
+                      required:
+                      - url
+                      - error
+                      description: A URL that failed to fetch
+                    description: URLs that failed to fetch
+                required:
+                - results
+                - errors
+                description: Fetch response with results and errors
+        '400':
+          description: Invalid request — missing urls, too many URLs, or bad parameter value
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+      tags:
+      - TinyFish Fetch API
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication. Get your key from the API Keys page.

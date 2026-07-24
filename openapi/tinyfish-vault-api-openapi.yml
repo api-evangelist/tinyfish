@@ -1,0 +1,1240 @@
+openapi: 3.0.0
+info:
+  title: TinyFish Browser Automation Vault API
+  version: 1.0.0
+  description: Create remote browser sessions for direct Playwright/CDP control.
+  contact:
+    name: TinyFish Support
+    email: support@tinyfish.ai
+servers:
+- url: https://api.browser.tinyfish.ai
+tags:
+- name: Vault
+  description: Vault credential management endpoints for connecting password managers and managing stored credentials
+paths:
+  /v1/vault/connections:
+    post:
+      operationId: connectVault
+      summary: Connect a vault provider
+      description: Connect a supported password manager and immediately sync display-safe credential metadata.
+      tags:
+      - Vault
+      security:
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                  enum:
+                  - 1password
+                  - bitwarden
+                  description: Vault provider identifier.
+                  example: 1password
+                token:
+                  type: string
+                  description: 1Password service account token. Required when provider is 1password.
+                clientId:
+                  type: string
+                  description: Bitwarden client ID. Required when provider is bitwarden.
+                clientSecret:
+                  type: string
+                  description: Bitwarden client secret. Required when provider is bitwarden.
+                masterPassword:
+                  type: string
+                  description: Bitwarden master password. Required when provider is bitwarden.
+                serverUrl:
+                  type: string
+                  format: uri
+                  description: Optional self-hosted Bitwarden server URL.
+                  example: https://vault.example.com
+              required:
+              - provider
+              description: Connect a vault provider. For `1password`, provide `token`. For `bitwarden`, provide `clientId`, `clientSecret`, and `masterPassword`.
+      responses:
+        '200':
+          description: Vault connected successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  connectionId:
+                    type: string
+                    example: conn_123
+                  connected:
+                    type: boolean
+                    enum:
+                    - true
+                  provider:
+                    type: string
+                    enum:
+                    - 1password
+                    - bitwarden
+                    description: Vault provider identifier.
+                    example: 1password
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        itemId:
+                          type: string
+                          example: cred:conn-123:Personal:item-abc123
+                        connectionId:
+                          type: string
+                          nullable: true
+                          example: conn_123
+                        label:
+                          type: string
+                          example: Amazon Login
+                        vaultName:
+                          type: string
+                          example: Personal
+                        domains:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - amazon.com
+                        fieldMetadata:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              fieldId:
+                                type: string
+                                example: password
+                              label:
+                                type: string
+                                example: Password
+                              type:
+                                type: string
+                                enum:
+                                - STRING
+                                - CONCEALED
+                                - OTP
+                                example: CONCEALED
+                            required:
+                            - fieldId
+                            - label
+                            - type
+                            description: Metadata for a single vault field.
+                        hasTotp:
+                          type: boolean
+                          example: true
+                      required:
+                      - itemId
+                      - connectionId
+                      - label
+                      - vaultName
+                      - domains
+                      - fieldMetadata
+                      - hasTotp
+                      description: Display-safe vault item metadata.
+                required:
+                - connectionId
+                - connected
+                - provider
+                - items
+        '400':
+          description: Invalid request body or provider credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '503':
+          description: Vault feature is not enabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+    get:
+      operationId: listVaultConnections
+      summary: List vault connections
+      description: List all connected vault providers for the authenticated user.
+      tags:
+      - Vault
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Vault connections retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  connections:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: conn_123
+                        provider:
+                          type: string
+                          enum:
+                          - 1password
+                          - bitwarden
+                          description: Vault provider identifier.
+                          example: 1password
+                        connectionStatus:
+                          type: string
+                          example: connected
+                        lastValidatedAt:
+                          type: string
+                          nullable: true
+                          example: '2026-04-05T12:00:00Z'
+                      required:
+                      - id
+                      - provider
+                      - connectionStatus
+                      - lastValidatedAt
+                required:
+                - connections
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '503':
+          description: Vault feature is not enabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/vault/connections/{connectionId}:
+    delete:
+      operationId: disconnectVault
+      summary: Disconnect a vault provider
+      description: Disconnect a vault provider and remove its stored enabled items.
+      tags:
+      - Vault
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - schema:
+          type: string
+          example: conn_123
+        required: true
+        name: connectionId
+        in: path
+      responses:
+        '200':
+          description: Vault disconnected successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  disconnected:
+                    type: boolean
+                    enum:
+                    - true
+                  connectionId:
+                    type: string
+                    example: conn_123
+                required:
+                - disconnected
+                - connectionId
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: Vault connection not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '503':
+          description: Vault feature is not enabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/vault/items:
+    get:
+      operationId: listVaultItems
+      summary: List vault items
+      description: List all vault items currently available from connected providers.
+      tags:
+      - Vault
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Vault items retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        itemId:
+                          type: string
+                          example: cred:conn-123:Personal:item-abc123
+                        connectionId:
+                          type: string
+                          nullable: true
+                          example: conn_123
+                        label:
+                          type: string
+                          example: Amazon Login
+                        vaultName:
+                          type: string
+                          example: Personal
+                        domains:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - amazon.com
+                        fieldMetadata:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              fieldId:
+                                type: string
+                                example: password
+                              label:
+                                type: string
+                                example: Password
+                              type:
+                                type: string
+                                enum:
+                                - STRING
+                                - CONCEALED
+                                - OTP
+                                example: CONCEALED
+                            required:
+                            - fieldId
+                            - label
+                            - type
+                            description: Metadata for a single vault field.
+                        hasTotp:
+                          type: boolean
+                          example: true
+                      required:
+                      - itemId
+                      - connectionId
+                      - label
+                      - vaultName
+                      - domains
+                      - fieldMetadata
+                      - hasTotp
+                      description: Display-safe vault item metadata.
+                required:
+                - items
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: No vault connection found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '503':
+          description: Vault feature is not enabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/vault/items/sync:
+    post:
+      operationId: syncVaultItems
+      summary: Sync vault items
+      description: Sync items from connected providers and return merged item state plus sync counters.
+      tags:
+      - Vault
+      security:
+      - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Vault items synced successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        itemId:
+                          type: string
+                          example: cred:conn-123:Personal:item-abc123
+                        connectionId:
+                          type: string
+                          nullable: true
+                          example: conn_123
+                        label:
+                          type: string
+                          example: Amazon Login
+                        vaultName:
+                          type: string
+                          example: Personal
+                        domains:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - amazon.com
+                        fieldMetadata:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              fieldId:
+                                type: string
+                                example: password
+                              label:
+                                type: string
+                                example: Password
+                              type:
+                                type: string
+                                enum:
+                                - STRING
+                                - CONCEALED
+                                - OTP
+                                example: CONCEALED
+                            required:
+                            - fieldId
+                            - label
+                            - type
+                            description: Metadata for a single vault field.
+                        hasTotp:
+                          type: boolean
+                          example: true
+                      required:
+                      - itemId
+                      - connectionId
+                      - label
+                      - vaultName
+                      - domains
+                      - fieldMetadata
+                      - hasTotp
+                      description: Display-safe vault item metadata.
+                  sync_summary:
+                    type: object
+                    properties:
+                      added:
+                        type: integer
+                        minimum: 0
+                        example: 3
+                      updated:
+                        type: integer
+                        minimum: 0
+                        example: 1
+                      removed:
+                        type: integer
+                        minimum: 0
+                        example: 0
+                    required:
+                    - added
+                    - updated
+                    - removed
+                required:
+                - items
+                - sync_summary
+        '401':
+          description: Unauthorized - Invalid or missing API key, or vault connection expired and requires reconnection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: No vault connection found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '503':
+          description: Vault feature is not enabled or vault service unavailable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication. Get your key from the API Keys page.

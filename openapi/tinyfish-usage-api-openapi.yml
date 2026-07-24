@@ -1,0 +1,395 @@
+openapi: 3.0.0
+info:
+  title: TinyFish Browser Automation Usage API
+  version: 1.0.0
+  description: Create remote browser sessions for direct Playwright/CDP control.
+  contact:
+    name: TinyFish Support
+    email: support@tinyfish.ai
+servers:
+- url: https://api.browser.tinyfish.ai
+tags:
+- name: Usage
+paths:
+  /usage:
+    get:
+      operationId: listBrowserUsage
+      summary: List browser session usage
+      description: List Tetra browser session usage for the authenticated user. Returns session telemetry including duration, data transfer, mode, and status.
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - schema:
+          type: string
+        required: false
+        name: session_id
+        in: query
+      - schema:
+          type: string
+          format: date-time
+        required: false
+        name: start_after
+        in: query
+      - schema:
+          type: string
+          format: date-time
+        required: false
+        name: end_before
+        in: query
+      - schema:
+          type: string
+          enum:
+          - running
+          - ended
+        required: false
+        name: status
+        in: query
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+        required: false
+        name: limit
+        in: query
+      - schema:
+          type: integer
+          minimum: 1
+          default: 1
+        required: false
+        name: page
+        in: query
+      responses:
+        '200':
+          description: Browser usage retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        session_id:
+                          type: string
+                        user_id:
+                          type: string
+                        sub_user_id:
+                          type: string
+                          nullable: true
+                        mode:
+                          type: string
+                          enum:
+                          - light
+                          - stealth
+                          - tf-browser
+                        start_time:
+                          type: string
+                          format: date-time
+                        end_time:
+                          type: string
+                          nullable: true
+                          format: date-time
+                        duration_ms:
+                          type: integer
+                          nullable: true
+                        proxy_trg_rx_bytes:
+                          type: integer
+                          nullable: true
+                        proxy_trg_tx_bytes:
+                          type: integer
+                          nullable: true
+                        status:
+                          type: string
+                          enum:
+                          - running
+                          - ended
+                          - created
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                      required:
+                      - session_id
+                      - user_id
+                      - sub_user_id
+                      - mode
+                      - start_time
+                      - end_time
+                      - duration_ms
+                      - proxy_trg_rx_bytes
+                      - proxy_trg_tx_bytes
+                      - status
+                      - created_at
+                      - updated_at
+                      description: A single browser usage record
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  page:
+                    type: integer
+                  total_pages:
+                    type: integer
+                  has_more:
+                    type: boolean
+                required:
+                - items
+                - total
+                - limit
+                - page
+                - total_pages
+                - has_more
+                description: Paginated browser usage response
+              example:
+                items:
+                - session_id: tf-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  user_id: cus_abc123
+                  sub_user_id: user_abc123
+                  mode: tf-browser
+                  start_time: '2026-03-18T16:18:35Z'
+                  end_time: '2026-03-18T16:28:36Z'
+                  duration_ms: 600543
+                  proxy_trg_rx_bytes: 38006
+                  proxy_trg_tx_bytes: 952337
+                  status: ended
+                  created_at: '2026-03-18T16:18:12Z'
+                  updated_at: '2026-03-18T16:28:36Z'
+                total: 1
+                limit: 100
+                page: 1
+                total_pages: 1
+                has_more: false
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: Browser API is not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '502':
+          description: Failed to fetch browser usage from upstream
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+      tags:
+      - Usage
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication. Get your key from the API Keys page.

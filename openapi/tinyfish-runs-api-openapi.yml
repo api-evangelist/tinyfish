@@ -1,0 +1,1705 @@
+openapi: 3.0.0
+info:
+  title: TinyFish Browser Automation Runs API
+  version: 1.0.0
+  description: Create remote browser sessions for direct Playwright/CDP control.
+  contact:
+    name: TinyFish Support
+    email: support@tinyfish.ai
+servers:
+- url: https://api.browser.tinyfish.ai
+tags:
+- name: Runs
+  description: Endpoints for retrieving automation run data
+paths:
+  /v1/runs:
+    get:
+      operationId: listRuns
+      description: List automation runs with optional filtering by status, goal text, and date range. Returns paginated results with total count. Default sort order is newest first.
+      summary: List and search runs
+      tags:
+      - Runs
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - schema:
+          type: string
+          enum:
+          - PENDING
+          - RUNNING
+          - COMPLETED
+          - FAILED
+          - CANCELLED
+          description: Filter by run status
+          example: COMPLETED
+        required: false
+        description: Filter by run status
+        name: status
+        in: query
+      - schema:
+          type: string
+          maxLength: 500
+          description: Filter runs by goal text (case-insensitive partial match)
+          example: linkedin
+        required: false
+        description: Filter runs by goal text (case-insensitive partial match)
+        name: goal
+        in: query
+      - schema:
+          type: string
+          format: date-time
+          description: Filter runs created after this ISO 8601 timestamp
+          example: '2026-01-01T00:00:00Z'
+        required: false
+        description: Filter runs created after this ISO 8601 timestamp
+        name: created_after
+        in: query
+      - schema:
+          type: string
+          format: date-time
+          description: Filter runs created before this ISO 8601 timestamp
+          example: '2026-02-01T00:00:00Z'
+        required: false
+        description: Filter runs created before this ISO 8601 timestamp
+        name: created_before
+        in: query
+      - schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+          description: Sort order by created_at
+          example: desc
+        required: false
+        description: Sort order by created_at
+        name: sort_direction
+        in: query
+      - schema:
+          type: string
+          description: Cursor for pagination (from previous response)
+          example: eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0=
+        required: false
+        description: Cursor for pagination (from previous response)
+        name: cursor
+        in: query
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+          description: Maximum number of results to return (1-100)
+          example: 20
+        required: false
+        description: Maximum number of results to return (1-100)
+        name: limit
+        in: query
+      responses:
+        '200':
+          description: Paginated list of runs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        run_id:
+                          type: string
+                          description: Unique identifier for the run
+                          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - RUNNING
+                          - COMPLETED
+                          - FAILED
+                          - CANCELLED
+                          description: Current status of the run
+                          example: COMPLETED
+                        goal:
+                          type: string
+                          description: Natural language goal for this automation run
+                          example: Find all pricing information
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp when run was created
+                          example: '2026-01-14T10:30:00Z'
+                        started_at:
+                          type: string
+                          nullable: true
+                          description: ISO 8601 timestamp when run started executing
+                          example: '2026-01-14T10:30:05Z'
+                        finished_at:
+                          type: string
+                          nullable: true
+                          description: ISO 8601 timestamp when run finished
+                          example: '2026-01-14T10:31:30Z'
+                        num_of_steps:
+                          type: integer
+                          nullable: true
+                          minimum: 0
+                          description: Number of steps taken during the automation run. Null while the run is still in progress.
+                          example: 5
+                        result:
+                          type: object
+                          nullable: true
+                          additionalProperties:
+                            nullable: true
+                          description: Extracted data from the automation run
+                        schema_validation:
+                          type: object
+                          nullable: true
+                          properties:
+                            valid:
+                              type: boolean
+                              description: Whether the run result matched the provided output_schema.
+                              example: false
+                            re_prompt_attempts:
+                              type: integer
+                              minimum: 0
+                              maximum: 2
+                              description: Number of schema-repair re-prompt attempts performed for the run result.
+                              example: 1
+                            errors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  path:
+                                    type: string
+                                    description: Path to the field that failed schema validation.
+                                    example: price
+                                  expected:
+                                    type: string
+                                    description: Expected schema type or constraint.
+                                    example: number
+                                  received:
+                                    type: string
+                                    description: Actual value type encountered in the run result.
+                                    example: string
+                                  message:
+                                    type: string
+                                    description: Human-readable validation error message.
+                                    example: Expected number, received string
+                                required:
+                                - path
+                                - expected
+                                - received
+                                - message
+                              description: Validation mismatches captured for the final run result.
+                          required:
+                          - valid
+                          - re_prompt_attempts
+                          - errors
+                          description: Schema validation result. Null when no output_schema was provided for the run.
+                          example:
+                            valid: false
+                            re_prompt_attempts: 1
+                            errors:
+                            - path: price
+                              expected: number
+                              received: string
+                              message: Expected number, received string
+                        error:
+                          type: object
+                          nullable: true
+                          properties:
+                            code:
+                              type: string
+                              description: Machine-readable error code for programmatic handling
+                              example: service_busy
+                            message:
+                              type: string
+                              description: Error message describing why the run failed
+                              example: Browser crashed during execution
+                            category:
+                              type: string
+                              enum:
+                              - SYSTEM_FAILURE
+                              - AGENT_FAILURE
+                              - BILLING_FAILURE
+                              - UNKNOWN
+                              description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
+                              example: SYSTEM_FAILURE
+                            retry_after:
+                              type: number
+                              nullable: true
+                              description: Suggested retry delay in seconds (null if not retryable)
+                              example: 60
+                            help_url:
+                              type: string
+                              description: URL to documentation for troubleshooting
+                              example: https://docs.tinyfish.ai/prompting-guide
+                            help_message:
+                              type: string
+                              description: Human-readable help message with guidance
+                              example: Need help? Check out our goal prompting guide for tips and examples.
+                          required:
+                          - message
+                          - category
+                          description: Error details. Null if the run succeeded or is still running.
+                        streaming_url:
+                          type: string
+                          nullable: true
+                          description: URL to watch live browser session (available while running)
+                          example: https://stream.agent.tinyfish.ai/session/xyz
+                        browser_config:
+                          type: object
+                          nullable: true
+                          properties:
+                            proxy_enabled:
+                              type: boolean
+                              nullable: true
+                              description: Whether proxy was enabled
+                              example: false
+                            proxy_country_code:
+                              type: string
+                              nullable: true
+                              description: Country code for proxy
+                              example: US
+                          required:
+                          - proxy_enabled
+                          - proxy_country_code
+                          description: Browser configuration used for the run
+                      required:
+                      - run_id
+                      - status
+                      - goal
+                      - created_at
+                      - started_at
+                      - finished_at
+                      - num_of_steps
+                      - result
+                      - schema_validation
+                      - error
+                      - streaming_url
+                      - browser_config
+                      description: A run summary (without video_url and steps)
+                    description: Array of runs
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        description: Total number of runs matching the current filters
+                        example: 142
+                      next_cursor:
+                        type: string
+                        nullable: true
+                        description: Cursor for fetching next page. Null if no more results.
+                        example: eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0=
+                      has_more:
+                        type: boolean
+                        description: Whether there are more results after this page
+                        example: true
+                    required:
+                    - total
+                    - next_cursor
+                    - has_more
+                    description: Pagination information
+                required:
+                - data
+                - pagination
+                description: Paginated list of runs
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/runs/batch:
+    post:
+      operationId: batchGetRuns
+      summary: Get multiple runs by IDs
+      description: Retrieve multiple runs by their IDs in a single request. Returns found runs and lists any IDs that were not found or not owned. Maximum 100 IDs per request.
+      tags:
+      - Runs
+      security:
+      - ApiKeyAuth: []
+      requestBody:
+        description: Array of run IDs to fetch
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                run_ids:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  maxItems: 100
+                  description: Array of run IDs (1-100)
+                  example:
+                  - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  - b2c3d4e5-f6a7-8901-bcde-f23456789012
+              required:
+              - run_ids
+              description: Batch runs request
+      responses:
+        '200':
+          description: Request succeeded. Returns found runs in `data` and any missing IDs in `not_found`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        run_id:
+                          type: string
+                          description: Unique identifier for the run
+                          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - RUNNING
+                          - COMPLETED
+                          - FAILED
+                          - CANCELLED
+                          description: Current status of the run
+                          example: COMPLETED
+                        goal:
+                          type: string
+                          description: Natural language goal for this automation run
+                          example: Find all pricing information
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp when run was created
+                          example: '2026-01-14T10:30:00Z'
+                        started_at:
+                          type: string
+                          nullable: true
+                          description: ISO 8601 timestamp when run started executing
+                          example: '2026-01-14T10:30:05Z'
+                        finished_at:
+                          type: string
+                          nullable: true
+                          description: ISO 8601 timestamp when run finished
+                          example: '2026-01-14T10:31:30Z'
+                        num_of_steps:
+                          type: integer
+                          nullable: true
+                          minimum: 0
+                          description: Number of steps taken during the automation run. Null while the run is still in progress.
+                          example: 5
+                        result:
+                          type: object
+                          nullable: true
+                          additionalProperties:
+                            nullable: true
+                          description: Extracted data from the automation run
+                        schema_validation:
+                          type: object
+                          nullable: true
+                          properties:
+                            valid:
+                              type: boolean
+                              description: Whether the run result matched the provided output_schema.
+                              example: false
+                            re_prompt_attempts:
+                              type: integer
+                              minimum: 0
+                              maximum: 2
+                              description: Number of schema-repair re-prompt attempts performed for the run result.
+                              example: 1
+                            errors:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  path:
+                                    type: string
+                                    description: Path to the field that failed schema validation.
+                                    example: price
+                                  expected:
+                                    type: string
+                                    description: Expected schema type or constraint.
+                                    example: number
+                                  received:
+                                    type: string
+                                    description: Actual value type encountered in the run result.
+                                    example: string
+                                  message:
+                                    type: string
+                                    description: Human-readable validation error message.
+                                    example: Expected number, received string
+                                required:
+                                - path
+                                - expected
+                                - received
+                                - message
+                              description: Validation mismatches captured for the final run result.
+                          required:
+                          - valid
+                          - re_prompt_attempts
+                          - errors
+                          description: Schema validation result. Null when no output_schema was provided for the run.
+                          example:
+                            valid: false
+                            re_prompt_attempts: 1
+                            errors:
+                            - path: price
+                              expected: number
+                              received: string
+                              message: Expected number, received string
+                        error:
+                          type: object
+                          nullable: true
+                          properties:
+                            code:
+                              type: string
+                              description: Machine-readable error code for programmatic handling
+                              example: service_busy
+                            message:
+                              type: string
+                              description: Error message describing why the run failed
+                              example: Browser crashed during execution
+                            category:
+                              type: string
+                              enum:
+                              - SYSTEM_FAILURE
+                              - AGENT_FAILURE
+                              - BILLING_FAILURE
+                              - UNKNOWN
+                              description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
+                              example: SYSTEM_FAILURE
+                            retry_after:
+                              type: number
+                              nullable: true
+                              description: Suggested retry delay in seconds (null if not retryable)
+                              example: 60
+                            help_url:
+                              type: string
+                              description: URL to documentation for troubleshooting
+                              example: https://docs.tinyfish.ai/prompting-guide
+                            help_message:
+                              type: string
+                              description: Human-readable help message with guidance
+                              example: Need help? Check out our goal prompting guide for tips and examples.
+                          required:
+                          - message
+                          - category
+                          description: Error details. Null if the run succeeded or is still running.
+                        streaming_url:
+                          type: string
+                          nullable: true
+                          description: URL to watch live browser session (available while running)
+                          example: https://stream.agent.tinyfish.ai/session/xyz
+                        browser_config:
+                          type: object
+                          nullable: true
+                          properties:
+                            proxy_enabled:
+                              type: boolean
+                              nullable: true
+                              description: Whether proxy was enabled
+                              example: false
+                            proxy_country_code:
+                              type: string
+                              nullable: true
+                              description: Country code for proxy
+                              example: US
+                          required:
+                          - proxy_enabled
+                          - proxy_country_code
+                          description: Browser configuration used for the run
+                        video_url:
+                          type: string
+                          nullable: true
+                          description: Presigned URL to the video recording of this run. Null if no recording is available. URL expires after 15 minutes.
+                          example: https://s3.amazonaws.com/bucket/eva-traces/run-id/video/recording.webm?...
+                        steps:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                description: Unique identifier for this step
+                                example: evt_abc123
+                              timestamp:
+                                type: string
+                                description: ISO 8601 timestamp when this step occurred
+                                example: '2026-01-14T10:30:05Z'
+                              status:
+                                type: string
+                                enum:
+                                - PENDING
+                                - RUNNING
+                                - COMPLETED
+                                - FAILED
+                                - CANCELLED
+                                description: Current status of the run
+                                example: COMPLETED
+                              action:
+                                type: string
+                                nullable: true
+                                description: Description of the action taken in this step
+                                example: Click the login button
+                              screenshot:
+                                type: string
+                                nullable: true
+                                description: Base64-encoded JPEG screenshot at this step (data:image/jpeg;base64,...). Null if screenshots=none or no screenshot available.
+                                example: data:image/jpeg;base64,/9j/4AAQSkZJRgAB...
+                              duration:
+                                type: string
+                                nullable: true
+                                description: Time taken for this step
+                                example: 1.2s
+                            required:
+                            - id
+                            - timestamp
+                            - status
+                            - action
+                            - screenshot
+                            - duration
+                            description: A single automation step
+                          description: Steps the agent took during this run.
+                      required:
+                      - run_id
+                      - status
+                      - goal
+                      - created_at
+                      - started_at
+                      - finished_at
+                      - num_of_steps
+                      - result
+                      - schema_validation
+                      - error
+                      - streaming_url
+                      - browser_config
+                      - video_url
+                      - steps
+                      description: A single automation run
+                    description: Found runs
+                  not_found:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                    description: Run IDs that were not found or not owned. Null if all found.
+                required:
+                - data
+                - not_found
+                description: Batch get runs response
+              example:
+                data:
+                - run_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  status: COMPLETED
+                  goal: Find all pricing information
+                  created_at: '2024-01-01T00:00:00Z'
+                  started_at: '2024-01-01T00:00:05Z'
+                  finished_at: '2024-01-01T00:00:30Z'
+                  result:
+                    product: iPhone 15
+                    price: $799
+                  error: null
+                not_found:
+                - b2c3d4e5-f6a7-8901-bcde-f23456789012
+        '400':
+          description: Invalid request - empty array, exceeds 100 IDs, or malformed input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/runs/batch/cancel:
+    post:
+      operationId: batchCancelRuns
+      summary: Cancel multiple runs by IDs
+      description: 'Cancel multiple runs by their IDs in a single request. Returns per-run results including cancelled runs, already-terminal runs, and not-found IDs. Maximum 100 IDs per request. Idempotent: calling twice returns consistent results.'
+      tags:
+      - Runs
+      security:
+      - ApiKeyAuth: []
+      requestBody:
+        description: Array of run IDs to cancel
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                run_ids:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  maxItems: 100
+                  description: Array of run IDs (1-100)
+                  example:
+                  - a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  - b2c3d4e5-f6a7-8901-bcde-f23456789012
+              required:
+              - run_ids
+              description: Batch runs request
+      responses:
+        '200':
+          description: Request succeeded. Returns per-run results in `results` and any missing IDs in `not_found`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        run_id:
+                          type: string
+                          description: The unique identifier of the run
+                          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                        status:
+                          type: string
+                          enum:
+                          - CANCELLED
+                          - COMPLETED
+                          - FAILED
+                          description: The current status of the run. Returns actual status for idempotent responses (e.g., COMPLETED if run already finished)
+                          example: CANCELLED
+                        cancelled_at:
+                          type: string
+                          nullable: true
+                          description: ISO 8601 timestamp when the run was cancelled, or null if not cancelled
+                          example: '2026-01-14T10:30:55Z'
+                        message:
+                          type: string
+                          nullable: true
+                          description: Additional context about the cancellation result (e.g., "Run already cancelled", "Run already finished")
+                          example: Run already cancelled
+                      required:
+                      - run_id
+                      - status
+                      - cancelled_at
+                      - message
+                      description: Response from cancel run endpoint
+                    description: Results for runs that were found and processed (cancelled or already terminal)
+                  not_found:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                    description: Run IDs that were not found or not owned. Null if all found.
+                required:
+                - results
+                - not_found
+                description: Batch cancel runs response
+              example:
+                results:
+                - run_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  status: CANCELLED
+                  cancelled_at: '2024-01-01T00:00:30Z'
+                  message: null
+                - run_id: c3d4e5f6-a7b8-9012-cdef-345678901234
+                  status: COMPLETED
+                  cancelled_at: null
+                  message: Run already finished
+                not_found:
+                - b2c3d4e5-f6a7-8901-bcde-f23456789012
+        '400':
+          description: Invalid request - empty array, exceeds 100 IDs, or malformed input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/runs/{id}:
+    get:
+      operationId: getRunById
+      description: Get detailed information about a specific automation run by its ID.
+      summary: Get run by ID
+      tags:
+      - Runs
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - schema:
+          type: string
+          pattern: ^[A-Za-z0-9_-]+$
+          description: Run ID
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        required: true
+        description: Run ID
+        name: id
+        in: path
+      - schema:
+          type: string
+          enum:
+          - base64
+          - none
+          default: none
+          description: Whether to include base64-encoded screenshots in steps. Defaults to none.
+          example: base64
+        required: false
+        description: Whether to include base64-encoded screenshots in steps. Defaults to none.
+        name: screenshots
+        in: query
+      responses:
+        '200':
+          description: Run details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run_id:
+                    type: string
+                    description: Unique identifier for the run
+                    example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  status:
+                    type: string
+                    enum:
+                    - PENDING
+                    - RUNNING
+                    - COMPLETED
+                    - FAILED
+                    - CANCELLED
+                    description: Current status of the run
+                    example: COMPLETED
+                  goal:
+                    type: string
+                    description: Natural language goal for this automation run
+                    example: Find all pricing information
+                  created_at:
+                    type: string
+                    description: ISO 8601 timestamp when run was created
+                    example: '2026-01-14T10:30:00Z'
+                  started_at:
+                    type: string
+                    nullable: true
+                    description: ISO 8601 timestamp when run started executing
+                    example: '2026-01-14T10:30:05Z'
+                  finished_at:
+                    type: string
+                    nullable: true
+                    description: ISO 8601 timestamp when run finished
+                    example: '2026-01-14T10:31:30Z'
+                  num_of_steps:
+                    type: integer
+                    nullable: true
+                    minimum: 0
+                    description: Number of steps taken during the automation run. Null while the run is still in progress.
+                    example: 5
+                  result:
+                    type: object
+                    nullable: true
+                    additionalProperties:
+                      nullable: true
+                    description: Extracted data from the automation run
+                  schema_validation:
+                    type: object
+                    nullable: true
+                    properties:
+                      valid:
+                        type: boolean
+                        description: Whether the run result matched the provided output_schema.
+                        example: false
+                      re_prompt_attempts:
+                        type: integer
+                        minimum: 0
+                        maximum: 2
+                        description: Number of schema-repair re-prompt attempts performed for the run result.
+                        example: 1
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            path:
+                              type: string
+                              description: Path to the field that failed schema validation.
+                              example: price
+                            expected:
+                              type: string
+                              description: Expected schema type or constraint.
+                              example: number
+                            received:
+                              type: string
+                              description: Actual value type encountered in the run result.
+                              example: string
+                            message:
+                              type: string
+                              description: Human-readable validation error message.
+                              example: Expected number, received string
+                          required:
+                          - path
+                          - expected
+                          - received
+                          - message
+                        description: Validation mismatches captured for the final run result.
+                    required:
+                    - valid
+                    - re_prompt_attempts
+                    - errors
+                    description: Schema validation result. Null when no output_schema was provided for the run.
+                    example:
+                      valid: false
+                      re_prompt_attempts: 1
+                      errors:
+                      - path: price
+                        expected: number
+                        received: string
+                        message: Expected number, received string
+                  error:
+                    type: object
+                    nullable: true
+                    properties:
+                      code:
+                        type: string
+                        description: Machine-readable error code for programmatic handling
+                        example: service_busy
+                      message:
+                        type: string
+                        description: Error message describing why the run failed
+                        example: Browser crashed during execution
+                      category:
+                        type: string
+                        enum:
+                        - SYSTEM_FAILURE
+                        - AGENT_FAILURE
+                        - BILLING_FAILURE
+                        - UNKNOWN
+                        description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
+                        example: SYSTEM_FAILURE
+                      retry_after:
+                        type: number
+                        nullable: true
+                        description: Suggested retry delay in seconds (null if not retryable)
+                        example: 60
+                      help_url:
+                        type: string
+                        description: URL to documentation for troubleshooting
+                        example: https://docs.tinyfish.ai/prompting-guide
+                      help_message:
+                        type: string
+                        description: Human-readable help message with guidance
+                        example: Need help? Check out our goal prompting guide for tips and examples.
+                    required:
+                    - message
+                    - category
+                    description: Error details. Null if the run succeeded or is still running.
+                  streaming_url:
+                    type: string
+                    nullable: true
+                    description: URL to watch live browser session (available while running)
+                    example: https://stream.agent.tinyfish.ai/session/xyz
+                  browser_config:
+                    type: object
+                    nullable: true
+                    properties:
+                      proxy_enabled:
+                        type: boolean
+                        nullable: true
+                        description: Whether proxy was enabled
+                        example: false
+                      proxy_country_code:
+                        type: string
+                        nullable: true
+                        description: Country code for proxy
+                        example: US
+                    required:
+                    - proxy_enabled
+                    - proxy_country_code
+                    description: Browser configuration used for the run
+                  video_url:
+                    type: string
+                    nullable: true
+                    description: Presigned URL to the video recording of this run. Null if no recording is available. URL expires after 15 minutes.
+                    example: https://s3.amazonaws.com/bucket/eva-traces/run-id/video/recording.webm?...
+                  steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for this step
+                          example: evt_abc123
+                        timestamp:
+                          type: string
+                          description: ISO 8601 timestamp when this step occurred
+                          example: '2026-01-14T10:30:05Z'
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - RUNNING
+                          - COMPLETED
+                          - FAILED
+                          - CANCELLED
+                          description: Current status of the run
+                          example: COMPLETED
+                        action:
+                          type: string
+                          nullable: true
+                          description: Description of the action taken in this step
+                          example: Click the login button
+                        screenshot:
+                          type: string
+                          nullable: true
+                          description: Base64-encoded JPEG screenshot at this step (data:image/jpeg;base64,...). Null if screenshots=none or no screenshot available.
+                          example: data:image/jpeg;base64,/9j/4AAQSkZJRgAB...
+                        duration:
+                          type: string
+                          nullable: true
+                          description: Time taken for this step
+                          example: 1.2s
+                      required:
+                      - id
+                      - timestamp
+                      - status
+                      - action
+                      - screenshot
+                      - duration
+                      description: A single automation step
+                    description: Steps the agent took during this run.
+                required:
+                - run_id
+                - status
+                - goal
+                - created_at
+                - started_at
+                - finished_at
+                - num_of_steps
+                - result
+                - schema_validation
+                - error
+                - streaming_url
+                - browser_config
+                - video_url
+                - steps
+                description: A single automation run
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: Run not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+  /v1/runs/{id}/cancel:
+    post:
+      operationId: cancelRunById
+      description: Cancel a run by ID. Only runs created via `/v1/automation/run-async` or `/v1/automation/run-sse` can be cancelled. Runs created via the synchronous `/v1/automation/run` endpoint cannot be cancelled.
+      summary: Cancel run by ID
+      tags:
+      - Runs
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - schema:
+          type: string
+          pattern: ^[A-Za-z0-9_-]+$
+          description: Run ID
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        required: true
+        description: Run ID
+        name: id
+        in: path
+      responses:
+        '200':
+          description: Run cancelled successfully, or already in terminal state (idempotent)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run_id:
+                    type: string
+                    description: The unique identifier of the run
+                    example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                  status:
+                    type: string
+                    enum:
+                    - CANCELLED
+                    - COMPLETED
+                    - FAILED
+                    description: The current status of the run. Returns actual status for idempotent responses (e.g., COMPLETED if run already finished)
+                    example: CANCELLED
+                  cancelled_at:
+                    type: string
+                    nullable: true
+                    description: ISO 8601 timestamp when the run was cancelled, or null if not cancelled
+                    example: '2026-01-14T10:30:55Z'
+                  message:
+                    type: string
+                    nullable: true
+                    description: Additional context about the cancellation result (e.g., "Run already cancelled", "Run already finished")
+                    example: Run already cancelled
+                required:
+                - run_id
+                - status
+                - cancelled_at
+                - message
+                description: Response from cancel run endpoint
+              examples:
+                cancelled:
+                  summary: Run cancelled
+                  value:
+                    run_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    status: CANCELLED
+                    cancelled_at: '2024-01-01T00:00:00Z'
+                    message: null
+                alreadycancelled:
+                  summary: Run already cancelled (idempotent)
+                  value:
+                    run_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    status: CANCELLED
+                    cancelled_at: '2024-01-01T00:00:00Z'
+                    message: Run already cancelled
+                alreadyCompleted:
+                  summary: Run already completed (no-op)
+                  value:
+                    run_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    status: COMPLETED
+                    cancelled_at: null
+                    message: Run already finished
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '404':
+          description: Run not found or not owned by this API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                        - MISSING_API_KEY
+                        - INVALID_API_KEY
+                        - INVALID_INPUT
+                        - RATE_LIMIT_EXCEEDED
+                        - INTERNAL_ERROR
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - SERVICE_BUSY
+                        - TIMEOUT
+                        - INSUFFICIENT_CREDITS
+                        - CONTENT_POLICY_VIOLATION
+                        - MAX_STEPS_EXCEEDED
+                        - SITE_BLOCKED
+                        - TASK_FAILED
+                        - CANCELLED
+                        description: Machine-readable error code
+                        example: INVALID_INPUT
+                      message:
+                        type: string
+                        description: Human-readable error message
+                        example: Field "url" is required and must be a string
+                      details:
+                        nullable: true
+                        description: Additional error details (validation errors, etc.)
+                    required:
+                    - code
+                    - message
+                required:
+                - error
+                description: Standard error response format
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication. Get your key from the API Keys page.

@@ -1,0 +1,15 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for TinyFish Search API
+  version: 1.0.0
+extends: openapi/tinyfish-search-openapi.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: tinyfish
+      x-apievangelist-auth: X-API-Key header (ApiKeyAuth)
+      x-apievangelist-artifacts:
+        authentication: authentication/tinyfish-authentication.yml
+        errors: errors/tinyfish-error-codes.yml
+        conventions: conventions/tinyfish-conventions.yml
+        agentic_access: agentic-access/tinyfish-agentic-access.yml

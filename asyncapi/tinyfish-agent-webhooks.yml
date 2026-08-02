@@ -1,0 +1,43 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.tinyfish.ai/webhooks
+spec_type: Webhooks
+summary: >-
+  The TinyFish Agent (Automation) API delivers run-lifecycle webhooks. A run is
+  subscribed by passing an HTTPS `webhook_url` to any run-creation endpoint
+  (/v1/automation/run, /run-async, /run-sse, /run-batch). No published AsyncAPI
+  document; this is the documented webhook catalog.
+transport: https-post
+content_type: application/json
+registration:
+  field: webhook_url
+  applies_to: [run, runAsync, runSse, runBatch]
+  requirement: HTTPS URL required
+delivery:
+  attempts: 4
+  policy: 1 initial + 3 retries
+  backoff_seconds: [1, 2, 4]
+  timeout_seconds: 10
+  retry_on: [5xx, network-error]
+  no_retry_on: [4xx]
+signature_verification: not documented
+payload_shape:
+  event: string
+  run_id: string
+  status: enum [COMPLETED, FAILED, CANCELLED]
+  data:
+    started_at: ISO timestamp
+    finished_at: ISO timestamp
+    result: extracted data or null
+    error: error details or null
+    steps: array of agent actions
+events:
+  - name: run.completed
+    status: COMPLETED
+    description: A run finished successfully.
+  - name: run.failed
+    status: FAILED
+    description: An infrastructure error occurred during the run.
+  - name: run.cancelled
+    status: CANCELLED
+    description: A run was manually cancelled.

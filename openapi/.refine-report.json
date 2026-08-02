@@ -1,0 +1,26 @@
+{
+  "provider": "tinyfish",
+  "sources": [
+    "tinyfish-automation-api-openapi.yml",
+    "tinyfish-runs-api-openapi.yml",
+    "tinyfish-tinyfish-browser-api-api-openapi.yml",
+    "tinyfish-tinyfish-fetch-api-api-openapi.yml",
+    "tinyfish-tinyfish-search-api-api-openapi.yml",
+    "tinyfish-usage-api-openapi.yml",
+    "tinyfish-vault-api-openapi.yml"
+  ],
+  "outputs": [
+    "tinyfish-automation-api-openapi.yml",
+    "tinyfish-runs-api-openapi.yml",
+    "tinyfish-tinyfish-browser-api-api-openapi.yml",
+    "tinyfish-tinyfish-fetch-api-api-openapi.yml",
+    "tinyfish-tinyfish-search-api-api-openapi.yml",
+    "tinyfish-usage-api-openapi.yml",
+    "tinyfish-vault-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

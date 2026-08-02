@@ -1,0 +1,32 @@
+generated: '2026-07-21'
+method: searched
+source: https://pypi.org/project/tinyfish/, https://www.npmjs.com/package/agentql-mcp, https://github.com/tinyfish-io
+packages:
+  - language: python
+    registry: pypi
+    name: tinyfish
+    url: https://pypi.org/project/tinyfish/
+    install: pip install tinyfish
+    official: true
+    description: Official TinyFish Python SDK for the Web Agent, Search, Fetch and Browser APIs.
+  - language: python
+    registry: pypi
+    name: agentql
+    url: https://pypi.org/project/agentql/
+    install: pip install agentql
+    official: true
+    description: Tiny Fish AgentQL Python client — query language and Playwright integrations for web data extraction.
+  - language: javascript
+    registry: npm
+    name: agentql-mcp
+    url: https://www.npmjs.com/package/agentql-mcp
+    install: npm install agentql-mcp
+    official: true
+    description: Model Context Protocol server that integrates AgentQL's data extraction capabilities.
+  - language: python
+    registry: pypi
+    name: tf-playwright-stealth
+    url: https://github.com/tinyfish-io/tf-playwright-stealth
+    install: pip install tf-playwright-stealth
+    official: true
+    description: TinyFish fork of playwright-stealth for anti-bot browser automation.

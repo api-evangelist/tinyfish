@@ -1,0 +1,35 @@
+generated: '2026-07-21'
+method: searched
+notes: >-
+  OAuth/OIDC discovery documents are served by Clerk (issuer clerk.tinyfish.ai) and
+  cover TinyFish dashboard/user SSO login, not the programmatic API. The public
+  APIs (Agent, Search, Fetch, Browser) authenticate with an X-API-Key header.
+hosts:
+  - host: https://agent.tinyfish.ai
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: tinyfish-openid-configuration.json
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: tinyfish-oauth-authorization-server.json
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://docs.tinyfish.ai
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+  - host: https://api.search.tinyfish.ai
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+  - host: https://www.tinyfish.ai
+    documents:
+      - path: /.well-known/security.txt
+        status: 404

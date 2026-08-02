@@ -1,0 +1,15 @@
+generated: '2026-07-21'
+method: searched
+source: https://tinyfish.instatus.com, openapi/tinyfish-main-openapi.json, https://docs.tinyfish.ai
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://docs.tinyfish.ai/authentication
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+status_page: https://tinyfish.instatus.com
+deprecated_operations: []

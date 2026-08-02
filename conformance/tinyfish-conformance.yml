@@ -1,0 +1,34 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/tinyfish-main-openapi.json (+ search/fetch/browser), well-known/tinyfish-openid-configuration.json
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: Public APIs authenticate with X-API-Key; no oauth2 securityScheme in the API specs.
+  - id: oidc
+    conforms: true
+    evidence: OIDC discovery served by Clerk (issuer clerk.tinyfish.ai) for dashboard/user SSO, not programmatic API auth.
+  - id: api-key
+    conforms: true
+    evidence: All four API specs declare apiKey (X-API-Key header) security.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors return a provider-specific JSON envelope (error_code/message/request_id), not application/problem+json.
+  - id: cursor-pagination
+    conforms: true
+    evidence: List endpoints use opaque cursor + limit with next_cursor/has_more/total.
+  - id: rate-limit-signaling
+    conforms: true
+    evidence: HTTP 429 RATE_LIMIT_EXCEEDED with Retry-After.
+  - id: webhooks
+    conforms: true
+    evidence: Run-lifecycle webhooks (run.completed/failed/cancelled) with retry+backoff.
+  - id: idempotency-keys
+    conforms: false
+    evidence: Run-creation endpoints explicitly do not support client idempotency keys.
+  - id: fhir-r4
+    conforms: false
+  - id: fapi
+    conforms: false
+  - id: scim
+    conforms: false

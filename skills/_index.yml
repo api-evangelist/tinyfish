@@ -1,0 +1,20 @@
+generated: '2026-07-21'
+method: generated
+source: openapi/tinyfish-main-openapi.json, openapi/tinyfish-search-openapi.json, openapi/tinyfish-fetch-openapi.json, openapi/tinyfish-browser-openapi.json
+skills:
+  - file: tinyfish-run-web-automation.md
+    name: Run a web automation goal
+    api: openapi/tinyfish-main-openapi.json
+    operations: [run, runAsync, getRunById, cancelRunById]
+  - file: tinyfish-search-and-fetch.md
+    name: Search the web and fetch clean content
+    api: openapi/tinyfish-search-openapi.json
+    operations: [search, fetchUrls, listSearchUsage, listFetchUsage]
+  - file: tinyfish-batch-automation.md
+    name: Run automations at scale (batch)
+    api: openapi/tinyfish-main-openapi.json
+    operations: [runBatch, batchGetRuns, batchCancelRuns, listRuns]
+  - file: tinyfish-authenticated-automation-with-vault.md
+    name: Automate logged-in sites with vault credentials
+    api: openapi/tinyfish-main-openapi.json
+    operations: [connectVault, listVaultConnections, syncVaultItems, listVaultItems, run, disconnectVault]

@@ -1,0 +1,77 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/tinyfish-main-openapi.json, openapi/tinyfish-search-openapi.json, openapi/tinyfish-fetch-openapi.json, openapi/tinyfish-browser-openapi.json
+docs: https://docs.tinyfish.ai/error-codes
+format: json
+envelope:
+  content_type: application/json
+  fields: [error_code, message, request_id]
+  notes: >-
+    Errors return a JSON body carrying a machine-readable error_code (enum
+    below), a human message, and a request_id for support correlation. This is a
+    provider-specific JSON error shape, not RFC 9457 application/problem+json.
+error_codes:
+  - code: MISSING_API_KEY
+    http_status: 401
+    meaning: No X-API-Key header was supplied.
+    action: Send a valid X-API-Key header from agent.tinyfish.ai/api-keys.
+  - code: INVALID_API_KEY
+    http_status: 401
+    meaning: The supplied API key is invalid or revoked.
+    action: Rotate the key in the dashboard and retry.
+  - code: UNAUTHORIZED
+    http_status: 401
+    meaning: The request is not authorized for the resource.
+    action: Verify the key and that the run/resource belongs to the caller.
+  - code: FORBIDDEN
+    http_status: 403
+    meaning: Access to the requested API or feature is not enabled for the account.
+    action: Enable the API in the dashboard or upgrade the plan.
+  - code: INSUFFICIENT_CREDITS
+    http_status: 403
+    meaning: No active subscription or not enough credits for the operation (402 on Search/Browser).
+    action: Add credits or activate a subscription.
+  - code: INVALID_INPUT
+    http_status: 400
+    meaning: Missing required fields, malformed body, or invalid parameters (e.g. too many URLs).
+    action: Fix the request payload/parameters and retry.
+  - code: NOT_FOUND
+    http_status: 404
+    meaning: Run, resource, or API endpoint not found / not available.
+    action: Verify the id and endpoint availability.
+  - code: RATE_LIMIT_EXCEEDED
+    http_status: 429
+    meaning: Too many requests in the current window.
+    action: Back off and retry; honor Retry-After when present.
+  - code: SERVICE_BUSY
+    http_status: 503
+    meaning: The service is temporarily overloaded or unavailable.
+    action: Retry with exponential backoff.
+  - code: INTERNAL_ERROR
+    http_status: 500
+    meaning: Unexpected server error.
+    action: Retry; contact support with the request_id if it persists.
+  - code: TIMEOUT
+    http_status: 500
+    meaning: The operation or automation run exceeded its time budget.
+    action: Simplify the goal or increase allowed time; retry.
+  - code: TASK_FAILED
+    http_status: 200
+    meaning: Automation run terminated in a FAILED state (run-outcome code, returned on the run object).
+    action: Inspect the run steps/goal and adjust the instructions.
+  - code: MAX_STEPS_EXCEEDED
+    http_status: 200
+    meaning: The automation exceeded the maximum allowed steps (run-outcome code).
+    action: Narrow the goal or raise the step budget.
+  - code: SITE_BLOCKED
+    http_status: 200
+    meaning: The target site blocked the automation (anti-bot / access denied) (run-outcome code).
+    action: Use a browser context profile, proxy, or the anti-bot guidance.
+  - code: CONTENT_POLICY_VIOLATION
+    http_status: 200
+    meaning: The requested action violated content policy and was refused (run-outcome code).
+    action: Adjust the goal to comply with policy.
+  - code: CANCELLED
+    http_status: 200
+    meaning: The run was cancelled by the caller (run-outcome status).
+    action: Not an error condition; expected terminal state after a cancel.

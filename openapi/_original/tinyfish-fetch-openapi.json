@@ -1,0 +1,933 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TinyFish Fetch API",
+    "version": "1.0.0",
+    "description": "Render URLs in a real browser and extract clean page content.",
+    "contact": {
+      "name": "TinyFish Support",
+      "email": "support@tinyfish.ai"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.fetch.tinyfish.ai"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "API key for authentication. Get your key from the API Keys page."
+      }
+    },
+    "schemas": {},
+    "parameters": {}
+  },
+  "paths": {
+    "/": {
+      "post": {
+        "operationId": "fetchUrls",
+        "summary": "Fetch and extract content from URLs",
+        "description": "Renders web pages using a real browser (including JavaScript-heavy sites) and returns clean extracted content in your preferred format. Submit up to 10 URLs, get back structured content. Per-URL failures appear in `errors[]` and do not fail the entire request.",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "URLs to fetch and extraction options",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "description": "Array of URLs to fetch (1-10). All URLs are fetched in parallel. Each URL is processed independently — if one fails, others still return successfully. Errors are reported per-URL in the errors array.",
+                    "example": [
+                      "https://example.com",
+                      "https://example.org"
+                    ]
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "markdown",
+                      "html",
+                      "json"
+                    ],
+                    "default": "markdown",
+                    "description": "Output format for extracted content. \"markdown\" (default) is ideal for LLM consumption. \"html\" returns cleaned semantic HTML. \"json\" returns a structured document tree.",
+                    "example": "markdown"
+                  },
+                  "links": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Extract all outbound links (<a href>) from each page. Useful for discovering related pages or navigating to specific content. Links are returned as absolute URLs in the links array of each result.",
+                    "example": false
+                  },
+                  "image_links": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Extract all image URLs (<img src>) from each page. Useful for finding visual content or media assets. Image links are returned as absolute URLs in the image_links array of each result.",
+                    "example": false
+                  }
+                },
+                "required": [
+                  "urls"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fetch completed. Check `errors[]` for any per-URL failures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "Original requested URL",
+                            "example": "https://example.com"
+                          },
+                          "final_url": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Final URL after redirects",
+                            "example": "https://www.example.com"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Page title",
+                            "example": "Example Domain"
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Page meta description",
+                            "example": "This domain is for use in illustrative examples."
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Detected language code",
+                            "example": "en"
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "markdown",
+                              "html",
+                              "json"
+                            ],
+                            "description": "Format of the extracted text",
+                            "example": "markdown"
+                          },
+                          "text": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {},
+                              {
+                                "nullable": true
+                              }
+                            ],
+                            "description": "Extracted content (string for markdown/html, object for json). Null if extraction failed."
+                          },
+                          "author": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Page author if available",
+                            "example": "John Doe"
+                          },
+                          "published_date": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Published date if available",
+                            "example": "2024-01-15"
+                          },
+                          "links": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Extracted links (only if links=true in request)"
+                          },
+                          "image_links": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Extracted image links (only if image_links=true in request)"
+                          },
+                          "latency_ms": {
+                            "type": "number",
+                            "nullable": true,
+                            "description": "Fetch latency for this URL in milliseconds if available from tf-fetch",
+                            "example": 1183.4
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "final_url",
+                          "title",
+                          "description",
+                          "language",
+                          "format",
+                          "text",
+                          "author",
+                          "published_date"
+                        ],
+                        "description": "A successfully fetched URL result"
+                      },
+                      "description": "Successfully fetched URLs"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "URL that failed to fetch",
+                            "example": "https://invalid.example.com"
+                          },
+                          "error": {
+                            "type": "string",
+                            "description": "Error message describing the failure",
+                            "example": "Failed to fetch resource"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "error"
+                        ],
+                        "description": "A URL that failed to fetch"
+                      },
+                      "description": "URLs that failed to fetch"
+                    }
+                  },
+                  "required": [
+                    "results",
+                    "errors"
+                  ],
+                  "description": "Fetch response with results and errors"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing urls, too many URLs, or bad parameter value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usage": {
+      "get": {
+        "operationId": "listFetchUsage",
+        "summary": "List fetch usage",
+        "description": "List fetch usage records for the authenticated user. Returns paginated results with URL, format, status, and metadata for each fetch operation.",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "name": "start_after",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "name": "end_before",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "completed",
+                "failed"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "name": "page",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch usage retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "final_url": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "author": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "published_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "format": {
+                            "type": "string",
+                            "enum": [
+                              "markdown",
+                              "html",
+                              "json"
+                            ]
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "completed",
+                              "failed"
+                            ]
+                          },
+                          "request_origin": {
+                            "type": "string"
+                          },
+                          "request_id": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "text_length": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "links_count": {
+                            "type": "integer"
+                          },
+                          "image_links_count": {
+                            "type": "integer"
+                          },
+                          "latency_ms": {
+                            "type": "number",
+                            "nullable": true
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "error": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "url",
+                          "final_url",
+                          "title",
+                          "description",
+                          "language",
+                          "author",
+                          "published_date",
+                          "format",
+                          "status",
+                          "request_origin",
+                          "request_id",
+                          "text_length",
+                          "links_count",
+                          "image_links_count",
+                          "latency_ms",
+                          "created_at",
+                          "error"
+                        ],
+                        "description": "A single fetch usage record"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "total_pages": {
+                      "type": "integer"
+                    },
+                    "has_more": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "total",
+                    "limit",
+                    "page",
+                    "total_pages",
+                    "has_more"
+                  ],
+                  "description": "Paginated fetch usage response"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "fr-abc123",
+                      "url": "https://example.com",
+                      "final_url": "https://example.com/page",
+                      "title": "Example Page",
+                      "description": "An example page",
+                      "language": "en",
+                      "author": null,
+                      "published_date": null,
+                      "format": "markdown",
+                      "status": "completed",
+                      "request_origin": "api",
+                      "request_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "text_length": 4096,
+                      "links_count": 12,
+                      "image_links_count": 3,
+                      "latency_ms": 250,
+                      "created_at": "2026-01-14T10:30:00.000Z",
+                      "error": null
+                    }
+                  ],
+                  "total": 1,
+                  "limit": 100,
+                  "page": 1,
+                  "total_pages": 1,
+                  "has_more": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Fetch API access is not enabled for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "MISSING_API_KEY",
+                            "INVALID_API_KEY",
+                            "INVALID_INPUT",
+                            "RATE_LIMIT_EXCEEDED",
+                            "INTERNAL_ERROR",
+                            "UNAUTHORIZED",
+                            "FORBIDDEN",
+                            "NOT_FOUND",
+                            "SERVICE_BUSY",
+                            "TIMEOUT",
+                            "INSUFFICIENT_CREDITS",
+                            "CONTENT_POLICY_VIOLATION",
+                            "MAX_STEPS_EXCEEDED",
+                            "SITE_BLOCKED",
+                            "TASK_FAILED",
+                            "CANCELLED"
+                          ],
+                          "description": "Machine-readable error code",
+                          "example": "INVALID_INPUT"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Human-readable error message",
+                          "example": "Field \"url\" is required and must be a string"
+                        },
+                        "details": {
+                          "nullable": true,
+                          "description": "Additional error details (validation errors, etc.)"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "description": "Standard error response format"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

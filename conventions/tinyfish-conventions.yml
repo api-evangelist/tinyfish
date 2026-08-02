@@ -1,0 +1,44 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/tinyfish-main-openapi.json (+ search/fetch/browser specs), https://docs.tinyfish.ai
+authentication:
+  style: api-key
+  header: X-API-Key
+  ref: authentication/tinyfish-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  example: https://agent.tinyfish.ai/v1/automation/run
+pagination:
+  style: cursor
+  request_params: [cursor, limit]
+  limit_default: 20
+  limit_max: 100
+  response_fields: [data, pagination.total, pagination.next_cursor, pagination.has_more]
+  notes: Opaque base64 cursor from the previous response; next_cursor is null when no more results.
+idempotency:
+  supported: false
+  detail: >-
+    Run-creation endpoints (/v1/automation/run, /run-async, /run-sse, /run-batch)
+    explicitly do NOT support idempotency keys — retrying a failed request may
+    create duplicate runs. Cancel/get batch endpoints are id-based and idempotent
+    (calling twice returns consistent results), but there is no client-supplied
+    idempotency-key contract for writes.
+request_tracing:
+  field: request_id
+  location: response body (and error envelope)
+  notes: Correlate support requests by request_id.
+rate_limiting:
+  signal: HTTP 429 with error_code RATE_LIMIT_EXCEEDED
+  retry_after: honor Retry-After header when present
+  ref: errors/tinyfish-error-codes.yml
+error_envelope:
+  content_type: application/json
+  fields: [error_code, message, request_id]
+  format: provider-json (not RFC 9457)
+  ref: errors/tinyfish-error-codes.yml
+webhooks:
+  ref: asyncapi/tinyfish-agent-webhooks.yml
+  events: [run.completed, run.failed, run.cancelled]
+lifecycle:
+  ref: lifecycle/tinyfish-lifecycle.yml

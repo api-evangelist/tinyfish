@@ -1,0 +1,17 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for TinyFish Web Agent Automation API
+  version: 1.0.0
+extends: openapi/tinyfish-main-openapi.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: tinyfish
+      x-apievangelist-auth: X-API-Key header (ApiKeyAuth)
+      x-apievangelist-artifacts:
+        authentication: authentication/tinyfish-authentication.yml
+        errors: errors/tinyfish-error-codes.yml
+        conventions: conventions/tinyfish-conventions.yml
+        webhooks: asyncapi/tinyfish-agent-webhooks.yml
+        mcp: mcp/tinyfish-mcp.yml
+        agentic_access: agentic-access/tinyfish-agentic-access.yml

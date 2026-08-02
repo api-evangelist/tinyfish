@@ -1,0 +1,52 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/tinyfish-main-openapi.json (+ search/fetch/browser)
+notes: >-
+  API specs use inline (non-$ref) schemas, so entities are derived from resource
+  paths and id-reference fields rather than components.schemas.
+entities:
+  - name: Run
+    id_field: run_id
+    id_prefix: run_
+    description: A single Web Agent automation execution (goal on a target site).
+    fields: [run_id, status, goal, url, started_at, finished_at, result, steps, webhook_url]
+  - name: BrowserSession
+    id_field: session_id
+    description: A remote cloud browser (CDP) session.
+    fields: [session_id, cdp_url, status, mode, duration]
+  - name: BrowserContextProfile
+    id_field: id
+    description: Persisted logged-in browser state (cookies/storage) reused across runs.
+    fields: [id, name, domains]
+  - name: VaultConnection
+    id_field: connectionId
+    description: A connected password manager (1Password/Bitwarden) providing credentials.
+    fields: [connectionId, provider, status]
+  - name: VaultItem
+    id_field: id
+    description: Display-safe credential metadata synced from a vault provider.
+    fields: [id, provider, name]
+  - name: SearchUsage
+    description: A search usage/telemetry record.
+  - name: FetchUsage
+    description: A fetch usage/telemetry record.
+relationships:
+  - from: Run
+    to: BrowserContextProfile
+    type: has_one
+    via: profile
+    optional: true
+  - from: Run
+    to: VaultItem
+    type: has_many
+    via: use_vault
+    optional: true
+  - from: VaultItem
+    to: VaultConnection
+    type: belongs_to
+    via: connectionId
+  - from: BrowserContextProfile
+    to: VaultConnection
+    type: has_many
+    via: domains
+    optional: true

@@ -1,0 +1,47 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.tinyfish.ai/cli/commands
+binary: tinyfish
+package: packages/tinyfish-packages.yml
+install:
+  - pip install tinyfish
+auth:
+  env: TINYFISH_API_KEY
+  commands:
+    - tinyfish auth login   # interactive: opens API keys page and saves key
+    - tinyfish auth set      # read key from stdin and persist
+    - tinyfish auth status   # verify key configuration and source
+    - tinyfish auth logout   # remove saved API key
+command_groups:
+  - group: search
+    commands:
+      - tinyfish search query        # web search with geo/language targeting
+  - group: fetch
+    commands:
+      - tinyfish fetch content get   # extract clean content from up to 10 URLs
+  - group: agent
+    commands:
+      - tinyfish agent run           # run automation (streaming/sync/async)
+      - tinyfish agent run list      # list recent runs with status filtering
+      - tinyfish agent run get       # full details for a run
+      - tinyfish agent run steps     # step-by-step execution trace
+      - tinyfish agent run watch     # poll/stream new steps until completion
+      - tinyfish agent run cancel    # stop a pending/running automation
+      - tinyfish agent batch run     # submit multiple runs from a CSV
+      - tinyfish agent batch list    # locally tracked batches
+      - tinyfish agent batch get     # batch results and per-run data
+      - tinyfish agent batch cancel  # stop all runs in a batch
+  - group: browser
+    commands:
+      - tinyfish browser session create  # remote browser, returns CDP WebSocket URL
+  - group: profile
+    commands:
+      - tinyfish profile create          # create a browser context profile
+      - tinyfish profile import-cookies  # extract Chrome cookies to profile (macOS/Linux)
+  - group: vault
+    commands:
+      - tinyfish vault connection add     # connect 1Password or Bitwarden
+      - tinyfish vault connection list    # list connected providers
+      - tinyfish vault connection remove  # disconnect provider, clear cached creds
+      - tinyfish vault item sync          # pull latest credentials
+      - tinyfish vault item list          # display synced credential items

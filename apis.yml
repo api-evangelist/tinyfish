@@ -121,6 +121,8 @@ apis:
   - type: OpenAPI
     url: openapi/tinyfish-vault-api-openapi.yml
 common:
+- type: Overlay
+  url: overlays/tinyfish-browser-overlay.yaml
 - type: DeveloperPortal
   url: https://docs.tinyfish.ai/
 - type: Documentation

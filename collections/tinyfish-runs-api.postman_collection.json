@@ -1,0 +1,1558 @@
+{
+  "item": [
+    {
+      "id": "32f4e366-6e7e-496e-b1db-9dac364c1af1",
+      "name": "Runs",
+      "description": {
+        "content": "Endpoints for retrieving automation run data",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "380b7f68-532d-40ca-b23b-00ebc85278e2",
+          "name": "List and search runs",
+          "request": {
+            "name": "List and search runs",
+            "description": {
+              "content": "List automation runs with optional filtering by status, goal text, and date range. Returns paginated results with total count. Default sort order is newest first.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by run status"
+                },
+                {
+                  "disabled": false,
+                  "key": "goal",
+                  "value": "<string>",
+                  "description": "Filter runs by goal text (case-insensitive partial match)"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<dateTime>",
+                  "description": "Filter runs created after this ISO 8601 timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<dateTime>",
+                  "description": "Filter runs created before this ISO 8601 timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_direction",
+                  "value": "desc",
+                  "description": "Sort order by created_at"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Cursor for pagination (from previous response)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of results to return (1-100)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cd542716-6f8f-4623-a67f-848a6d1866df",
+              "name": "Paginated list of runs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "COMPLETED"
+                    },
+                    {
+                      "key": "goal",
+                      "value": "linkedin"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2026-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2026-02-01T00:00:00Z"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"status\": \"COMPLETED\",\n      \"goal\": \"Find all pricing information\",\n      \"created_at\": \"2026-01-14T10:30:00Z\",\n      \"started_at\": \"2026-01-14T10:30:05Z\",\n      \"finished_at\": \"2026-01-14T10:31:30Z\",\n      \"num_of_steps\": 5,\n      \"result\": {\n        \"key_0\": {},\n        \"key_1\": {}\n      },\n      \"schema_validation\": {\n        \"valid\": false,\n        \"re_prompt_attempts\": 1,\n        \"errors\": [\n          {\n            \"path\": \"price\",\n            \"expected\": \"number\",\n            \"received\": \"string\",\n            \"message\": \"Expected number, received string\"\n          }\n        ]\n      },\n      \"error\": {\n        \"message\": \"Browser crashed during execution\",\n        \"category\": \"SYSTEM_FAILURE\",\n        \"code\": \"service_busy\",\n        \"retry_after\": 60,\n        \"help_url\": \"https://docs.tinyfish.ai/prompting-guide\",\n        \"help_message\": \"Need help? Check out our goal prompting guide for tips and examples.\"\n      },\n      \"streaming_url\": \"https://stream.agent.tinyfish.ai/session/xyz\",\n      \"browser_config\": {\n        \"proxy_enabled\": false,\n        \"proxy_country_code\": \"US\"\n      }\n    },\n    {\n      \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"status\": \"COMPLETED\",\n      \"goal\": \"Find all pricing information\",\n      \"created_at\": \"2026-01-14T10:30:00Z\",\n      \"started_at\": \"2026-01-14T10:30:05Z\",\n      \"finished_at\": \"2026-01-14T10:31:30Z\",\n      \"num_of_steps\": 5,\n      \"result\": {\n        \"key_0\": {},\n        \"key_1\": {}\n      },\n      \"schema_validation\": {\n        \"valid\": false,\n        \"re_prompt_attempts\": 1,\n        \"errors\": [\n          {\n            \"path\": \"price\",\n            \"expected\": \"number\",\n            \"received\": \"string\",\n            \"message\": \"Expected number, received string\"\n          }\n        ]\n      },\n      \"error\": {\n        \"message\": \"Browser crashed during execution\",\n        \"category\": \"SYSTEM_FAILURE\",\n        \"code\": \"service_busy\",\n        \"retry_after\": 60,\n        \"help_url\": \"https://docs.tinyfish.ai/prompting-guide\",\n        \"help_message\": \"Need help? Check out our goal prompting guide for tips and examples.\"\n      },\n      \"streaming_url\": \"https://stream.agent.tinyfish.ai/session/xyz\",\n      \"browser_config\": {\n        \"proxy_enabled\": false,\n        \"proxy_country_code\": \"US\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"total\": 142,\n    \"next_cursor\": \"eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0=\",\n    \"has_more\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd2557a4-f290-4a89-af64-96fe717fd99c",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "COMPLETED"
+                    },
+                    {
+                      "key": "goal",
+                      "value": "linkedin"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2026-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2026-02-01T00:00:00Z"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb744023-4c7e-420d-8efd-7d9ba6ae66a0",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "COMPLETED"
+                    },
+                    {
+                      "key": "goal",
+                      "value": "linkedin"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2026-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2026-02-01T00:00:00Z"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bf98da3-3c2d-4e85-ad4d-74c7a1b80676",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "COMPLETED"
+                    },
+                    {
+                      "key": "goal",
+                      "value": "linkedin"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2026-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2026-02-01T00:00:00Z"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2262982-eca5-468d-bb69-21e93e7ccd2b",
+          "name": "Get multiple runs by IDs",
+          "request": {
+            "name": "Get multiple runs by IDs",
+            "description": {
+              "content": "Retrieve multiple runs by their IDs in a single request. Returns found runs and lists any IDs that were not found or not owned. Maximum 100 IDs per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "runs",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_ids\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8552fa29-4966-4553-95a3-7fda6e840fc9",
+              "name": "Request succeeded. Returns found runs in `data` and any missing IDs in `not_found`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"status\": \"COMPLETED\",\n      \"goal\": \"Find all pricing information\",\n      \"created_at\": \"2024-01-01T00:00:00Z\",\n      \"started_at\": \"2024-01-01T00:00:05Z\",\n      \"finished_at\": \"2024-01-01T00:00:30Z\",\n      \"result\": {\n        \"product\": \"iPhone 15\",\n        \"price\": \"$799\"\n      },\n      \"error\": null\n    }\n  ],\n  \"not_found\": [\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ba0a73c-312f-4254-8d90-af4094b84745",
+              "name": "Invalid request - empty array, exceeds 100 IDs, or malformed input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07e38954-a24c-43a1-920c-8bce8d16e3d6",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ef3ea1b-51e2-4301-88b0-3517843c1455",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1966a6c9-bcfa-4047-8901-807d6681fcff",
+          "name": "Cancel multiple runs by IDs",
+          "request": {
+            "name": "Cancel multiple runs by IDs",
+            "description": {
+              "content": "Cancel multiple runs by their IDs in a single request. Returns per-run results including cancelled runs, already-terminal runs, and not-found IDs. Maximum 100 IDs per request. Idempotent: calling twice returns consistent results.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "runs",
+                "batch",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_ids\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "337a0dcb-7e69-46f5-8943-7b699991eb81",
+              "name": "Request succeeded. Returns per-run results in `results` and any missing IDs in `not_found`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"status\": \"CANCELLED\",\n      \"cancelled_at\": \"2024-01-01T00:00:30Z\",\n      \"message\": null\n    },\n    {\n      \"run_id\": \"c3d4e5f6-a7b8-9012-cdef-345678901234\",\n      \"status\": \"COMPLETED\",\n      \"cancelled_at\": null,\n      \"message\": \"Run already finished\"\n    }\n  ],\n  \"not_found\": [\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bfb84fe-142e-4d6a-8a5e-ce9e4317a78b",
+              "name": "Invalid request - empty array, exceeds 100 IDs, or malformed input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae0ba8ba-c25b-49b3-a008-d25898c0eb91",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf5ddef5-a759-45b3-b297-eb3eae69bc99",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    "batch",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1d44f220-cfe3-49c0-a97c-d3b61528ab19",
+          "name": "Get run by ID",
+          "request": {
+            "name": "Get run by ID",
+            "description": {
+              "content": "Get detailed information about a specific automation run by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "screenshots",
+                  "value": "none",
+                  "description": "Whether to include base64-encoded screenshots in steps. Defaults to none."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Run ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f27fcb9d-498f-4ace-86af-8fc6c1816fcd",
+              "name": "Run details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "screenshots",
+                      "value": "base64"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"status\": \"COMPLETED\",\n  \"goal\": \"Find all pricing information\",\n  \"created_at\": \"2026-01-14T10:30:00Z\",\n  \"started_at\": \"2026-01-14T10:30:05Z\",\n  \"finished_at\": \"2026-01-14T10:31:30Z\",\n  \"num_of_steps\": 5,\n  \"result\": {\n    \"key_0\": {},\n    \"key_1\": {}\n  },\n  \"schema_validation\": {\n    \"valid\": false,\n    \"re_prompt_attempts\": 1,\n    \"errors\": [\n      {\n        \"path\": \"price\",\n        \"expected\": \"number\",\n        \"received\": \"string\",\n        \"message\": \"Expected number, received string\"\n      }\n    ]\n  },\n  \"error\": {\n    \"message\": \"Browser crashed during execution\",\n    \"category\": \"SYSTEM_FAILURE\",\n    \"code\": \"service_busy\",\n    \"retry_after\": 60,\n    \"help_url\": \"https://docs.tinyfish.ai/prompting-guide\",\n    \"help_message\": \"Need help? Check out our goal prompting guide for tips and examples.\"\n  },\n  \"streaming_url\": \"https://stream.agent.tinyfish.ai/session/xyz\",\n  \"browser_config\": {\n    \"proxy_enabled\": false,\n    \"proxy_country_code\": \"US\"\n  },\n  \"video_url\": \"https://s3.amazonaws.com/bucket/eva-traces/run-id/video/recording.webm?...\",\n  \"steps\": [\n    {\n      \"id\": \"evt_abc123\",\n      \"timestamp\": \"2026-01-14T10:30:05Z\",\n      \"status\": \"COMPLETED\",\n      \"action\": \"Click the login button\",\n      \"screenshot\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgAB...\",\n      \"duration\": \"1.2s\"\n    },\n    {\n      \"id\": \"evt_abc123\",\n      \"timestamp\": \"2026-01-14T10:30:05Z\",\n      \"status\": \"COMPLETED\",\n      \"action\": \"Click the login button\",\n      \"screenshot\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgAB...\",\n      \"duration\": \"1.2s\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4a5d4e7-dcdf-4dff-b01e-241a901089a1",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "screenshots",
+                      "value": "base64"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c927d6d-7678-4072-a30b-05d476360f11",
+              "name": "Run not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "screenshots",
+                      "value": "base64"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a83af491-6356-4e03-a7b0-e6478d844bc2",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "screenshots",
+                      "value": "base64"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6821ec64-f5f5-4bba-b013-4ce0aa030434",
+          "name": "Cancel run by ID",
+          "request": {
+            "name": "Cancel run by ID",
+            "description": {
+              "content": "Cancel a run by ID. Only runs created via `/v1/automation/run-async` or `/v1/automation/run-sse` can be cancelled. Runs created via the synchronous `/v1/automation/run` endpoint cannot be cancelled.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "runs",
+                ":id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Run ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1bff917e-7841-40c4-a045-f8aee61becac",
+              "name": "Run cancelled successfully, or already in terminal state (idempotent)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"status\": \"CANCELLED\",\n  \"cancelled_at\": \"2024-01-01T00:00:00Z\",\n  \"message\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0820e303-862b-4945-9dcb-71d2de83b1ea",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6de6f730-4b8a-40c0-96f4-c0180e4b54a4",
+              "name": "Run not found or not owned by this API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5dae7289-e4af-45eb-8da0-6827540edf68",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "runs",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Run ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.browser.tinyfish.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "de41b298-637d-4f03-92b8-481b49992ce1",
+    "name": "TinyFish Browser Automation Runs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Create remote browser sessions for direct Playwright/CDP control.\n\nContact Support:\n Name: TinyFish Support\n Email: support@tinyfish.ai",
+      "type": "text/plain"
+    }
+  }
+}

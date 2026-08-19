@@ -1,0 +1,1490 @@
+{
+  "item": [
+    {
+      "id": "5392185f-d23d-45f6-84dc-aa1c064fc921",
+      "name": "Vault",
+      "description": {
+        "content": "Vault credential management endpoints for connecting password managers and managing stored credentials",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "81c1d7b5-e26a-4b43-b255-cdc61837bf6d",
+          "name": "Connect a vault provider",
+          "request": {
+            "name": "Connect a vault provider",
+            "description": {
+              "content": "Connect a supported password manager and immediately sync display-safe credential metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "vault",
+                "connections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"token\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"clientSecret\": \"<string>\",\n  \"masterPassword\": \"<string>\",\n  \"serverUrl\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fb9a17cb-e910-4634-95ee-889699b89395",
+              "name": "Vault connected successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"1password\",\n  \"token\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"clientSecret\": \"<string>\",\n  \"masterPassword\": \"<string>\",\n  \"serverUrl\": \"https://vault.example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"connectionId\": \"conn_123\",\n  \"connected\": true,\n  \"provider\": \"1password\",\n  \"items\": [\n    {\n      \"itemId\": \"cred:conn-123:Personal:item-abc123\",\n      \"connectionId\": \"conn_123\",\n      \"label\": \"Amazon Login\",\n      \"vaultName\": \"Personal\",\n      \"domains\": [\n        \"amazon.com\"\n      ],\n      \"fieldMetadata\": [\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        },\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        }\n      ],\n      \"hasTotp\": true\n    },\n    {\n      \"itemId\": \"cred:conn-123:Personal:item-abc123\",\n      \"connectionId\": \"conn_123\",\n      \"label\": \"Amazon Login\",\n      \"vaultName\": \"Personal\",\n      \"domains\": [\n        \"amazon.com\"\n      ],\n      \"fieldMetadata\": [\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        },\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        }\n      ],\n      \"hasTotp\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b48a1433-4d2f-4c62-ab80-2420fc80c867",
+              "name": "Invalid request body or provider credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"1password\",\n  \"token\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"clientSecret\": \"<string>\",\n  \"masterPassword\": \"<string>\",\n  \"serverUrl\": \"https://vault.example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c7855cc-297c-486e-8466-9c0a4c9de146",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"1password\",\n  \"token\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"clientSecret\": \"<string>\",\n  \"masterPassword\": \"<string>\",\n  \"serverUrl\": \"https://vault.example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a1eede74-6c8b-4c28-874b-968ff7bd9e99",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"1password\",\n  \"token\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"clientSecret\": \"<string>\",\n  \"masterPassword\": \"<string>\",\n  \"serverUrl\": \"https://vault.example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0568b9c5-adf8-496d-b124-a8b214b223ac",
+              "name": "Vault feature is not enabled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"1password\",\n  \"token\": \"<string>\",\n  \"clientId\": \"<string>\",\n  \"clientSecret\": \"<string>\",\n  \"masterPassword\": \"<string>\",\n  \"serverUrl\": \"https://vault.example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9474dd8d-8e1a-41d7-a74b-0695138491fc",
+          "name": "List vault connections",
+          "request": {
+            "name": "List vault connections",
+            "description": {
+              "content": "List all connected vault providers for the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "vault",
+                "connections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c299b2bf-4d57-4f82-a20a-7731d46ef8db",
+              "name": "Vault connections retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"connections\": [\n    {\n      \"id\": \"conn_123\",\n      \"provider\": \"1password\",\n      \"connectionStatus\": \"connected\",\n      \"lastValidatedAt\": \"2026-04-05T12:00:00Z\"\n    },\n    {\n      \"id\": \"conn_123\",\n      \"provider\": \"1password\",\n      \"connectionStatus\": \"connected\",\n      \"lastValidatedAt\": \"2026-04-05T12:00:00Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14d3a6db-a3f8-43c7-bf1f-972ea5245116",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "108be362-5307-40c6-a103-ef1ec8699793",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b445ff3-880b-407c-bb82-6dc916e32c3f",
+              "name": "Vault feature is not enabled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b8965118-62d0-4e4d-8128-277ec7cee65e",
+          "name": "Disconnect a vault provider",
+          "request": {
+            "name": "Disconnect a vault provider",
+            "description": {
+              "content": "Disconnect a vault provider and remove its stored enabled items.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "vault",
+                "connections",
+                ":connectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "448707b5-ee31-4153-8aad-e264c39936a7",
+              "name": "Vault disconnected successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"disconnected\": true,\n  \"connectionId\": \"conn_123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46f4cbc4-0b2b-4074-92ad-901fec83e259",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2614e8c3-8285-45cc-a0e1-24cdfd22d6f9",
+              "name": "Vault connection not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb95fb72-29ea-4871-8939-00ed3b370e52",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4e822f7-ee79-45d8-ba3b-16d1ef3dd983",
+              "name": "Vault feature is not enabled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "connections",
+                    ":connectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e40a8612-a8be-46ca-b578-64c66b951043",
+          "name": "List vault items",
+          "request": {
+            "name": "List vault items",
+            "description": {
+              "content": "List all vault items currently available from connected providers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "vault",
+                "items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "da1fc6f3-f964-4e56-861d-225e8aeb457b",
+              "name": "Vault items retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"itemId\": \"cred:conn-123:Personal:item-abc123\",\n      \"connectionId\": \"conn_123\",\n      \"label\": \"Amazon Login\",\n      \"vaultName\": \"Personal\",\n      \"domains\": [\n        \"amazon.com\"\n      ],\n      \"fieldMetadata\": [\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        },\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        }\n      ],\n      \"hasTotp\": true\n    },\n    {\n      \"itemId\": \"cred:conn-123:Personal:item-abc123\",\n      \"connectionId\": \"conn_123\",\n      \"label\": \"Amazon Login\",\n      \"vaultName\": \"Personal\",\n      \"domains\": [\n        \"amazon.com\"\n      ],\n      \"fieldMetadata\": [\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        },\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        }\n      ],\n      \"hasTotp\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66c10ed7-bc60-427b-8f09-1b13095d3b96",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f60c7f81-6b74-4ab3-9f9e-2f0e07c406de",
+              "name": "No vault connection found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f932b860-f152-40ce-a9a6-c513f7d0414c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3637168f-e087-4240-b6d0-ce9711bce5e4",
+              "name": "Vault feature is not enabled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a486ba6c-951f-403f-bedf-a7f53f669a82",
+          "name": "Sync vault items",
+          "request": {
+            "name": "Sync vault items",
+            "description": {
+              "content": "Sync items from connected providers and return merged item state plus sync counters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "vault",
+                "items",
+                "sync"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "87d7b746-9aed-468d-a609-b1f6418659c5",
+              "name": "Vault items synced successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"itemId\": \"cred:conn-123:Personal:item-abc123\",\n      \"connectionId\": \"conn_123\",\n      \"label\": \"Amazon Login\",\n      \"vaultName\": \"Personal\",\n      \"domains\": [\n        \"amazon.com\"\n      ],\n      \"fieldMetadata\": [\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        },\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        }\n      ],\n      \"hasTotp\": true\n    },\n    {\n      \"itemId\": \"cred:conn-123:Personal:item-abc123\",\n      \"connectionId\": \"conn_123\",\n      \"label\": \"Amazon Login\",\n      \"vaultName\": \"Personal\",\n      \"domains\": [\n        \"amazon.com\"\n      ],\n      \"fieldMetadata\": [\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        },\n        {\n          \"fieldId\": \"password\",\n          \"label\": \"Password\",\n          \"type\": \"CONCEALED\"\n        }\n      ],\n      \"hasTotp\": true\n    }\n  ],\n  \"sync_summary\": {\n    \"added\": 3,\n    \"updated\": 1,\n    \"removed\": 0\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67c0d549-27a0-45f7-a527-91fda5f47180",
+              "name": "Unauthorized - Invalid or missing API key, or vault connection expired and requires reconnection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ad712a8-39a9-4ebc-90b5-74f3e592c470",
+              "name": "No vault connection found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b4852a5-af1b-46b8-b3be-8d66a42e276e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d742412e-dae5-49b2-9b10-6fce58cce69f",
+              "name": "Vault feature is not enabled or vault service unavailable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "vault",
+                    "items",
+                    "sync"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.browser.tinyfish.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4021ff31-4812-474e-ba6f-53b69e762075",
+    "name": "TinyFish Browser Automation Vault API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Create remote browser sessions for direct Playwright/CDP control.\n\nContact Support:\n Name: TinyFish Support\n Email: support@tinyfish.ai",
+      "type": "text/plain"
+    }
+  }
+}

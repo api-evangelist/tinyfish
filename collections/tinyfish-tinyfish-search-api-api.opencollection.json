@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation TinyFish Search API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TinyFish Search API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search the web",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.browser.tinyfish.ai/",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search query"
+              },
+              {
+                "name": "location",
+                "value": "",
+                "type": "query",
+                "description": "Country code for geo-targeted results"
+              },
+              {
+                "name": "language",
+                "value": "",
+                "type": "query",
+                "description": "Language code for result language"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search the web and get structured results. Returns ranked results with titles, snippets, and URLs.\n\n**Location and language resolution:**\n- If `location` is set but `language` is not, the language auto-resolves to the most predominantly used language in that country.\n- If `language` is set but `location` is not, the location auto-resolves to the country where that language is most predominantly used.\n- If neither `location` nor `language` is set, defaults to `us` and `en`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

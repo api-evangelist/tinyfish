@@ -1,0 +1,522 @@
+{
+  "item": [
+    {
+      "id": "67315520-a647-4762-9ecc-60dcc29d000e",
+      "name": "Usage",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b0a1c99e-e74c-43aa-b721-0f176b6e75e6",
+          "name": "List browser session usage",
+          "request": {
+            "name": "List browser session usage",
+            "description": {
+              "content": "List Tetra browser session usage for the authenticated user. Returns session telemetry including duration, data transfer, mode, and status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "session_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_after",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_before",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3d6be272-f8cf-4261-ad16-facccf737768",
+              "name": "Browser usage retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"session_id\": \"tf-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"user_id\": \"cus_abc123\",\n      \"sub_user_id\": \"user_abc123\",\n      \"mode\": \"tf-browser\",\n      \"start_time\": \"2026-03-18T16:18:35Z\",\n      \"end_time\": \"2026-03-18T16:28:36Z\",\n      \"duration_ms\": 600543,\n      \"proxy_trg_rx_bytes\": 38006,\n      \"proxy_trg_tx_bytes\": 952337,\n      \"status\": \"ended\",\n      \"created_at\": \"2026-03-18T16:18:12Z\",\n      \"updated_at\": \"2026-03-18T16:28:36Z\"\n    }\n  ],\n  \"total\": 1,\n  \"limit\": 100,\n  \"page\": 1,\n  \"total_pages\": 1,\n  \"has_more\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd5dfa5f-362f-4efd-a267-6bcfc7575b1c",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38c710e6-c557-48e4-b448-3c2904797457",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2006819-412d-4034-9671-8b908b34bd81",
+              "name": "Browser API is not available",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c6c91b4-24b3-420c-9d2b-a978a5f747a5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "055ff012-b381-4fbb-9545-21de13de83a3",
+              "name": "Failed to fetch browser usage from upstream",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.browser.tinyfish.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a51fa747-5607-4e0c-a764-5d3be0d7f943",
+    "name": "TinyFish Browser Automation Usage API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Create remote browser sessions for direct Playwright/CDP control.\n\nContact Support:\n Name: TinyFish Support\n Email: support@tinyfish.ai",
+      "type": "text/plain"
+    }
+  }
+}

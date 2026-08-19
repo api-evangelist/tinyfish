@@ -1,0 +1,114 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation Vault API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Vault",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List vault connections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.browser.tinyfish.ai/v1/vault/connections",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all connected vault providers for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Connect a vault provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/vault/connections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Connect a supported password manager and immediately sync display-safe credential metadata."
+        },
+        {
+          "info": {
+            "name": "Disconnect a vault provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.browser.tinyfish.ai/v1/vault/connections/:connectionId",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Disconnect a vault provider and remove its stored enabled items."
+        },
+        {
+          "info": {
+            "name": "List vault items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.browser.tinyfish.ai/v1/vault/items",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List all vault items currently available from connected providers."
+        },
+        {
+          "info": {
+            "name": "Sync vault items",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/vault/items/sync",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Sync items from connected providers and return merged item state plus sync counters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

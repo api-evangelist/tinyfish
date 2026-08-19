@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation TinyFish Fetch API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TinyFish Fetch API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch and extract content from URLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Renders web pages using a real browser (including JavaScript-heavy sites) and returns clean extracted content in your preferred format. Submit up to 10 URLs, get back structured content. Per-URL failures appear in `errors[]` and do not fail the entire request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

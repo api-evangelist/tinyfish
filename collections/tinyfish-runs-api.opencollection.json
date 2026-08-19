@@ -1,0 +1,177 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation Runs API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List and search runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.browser.tinyfish.ai/v1/runs",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by run status"
+              },
+              {
+                "name": "goal",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs by goal text (case-insensitive partial match)"
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs created after this ISO 8601 timestamp"
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs created before this ISO 8601 timestamp"
+              },
+              {
+                "name": "sort_direction",
+                "value": "",
+                "type": "query",
+                "description": "Sort order by created_at"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination (from previous response)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return (1-100)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List automation runs with optional filtering by status, goal text, and date range. Returns paginated results with total count. Default sort order is newest first."
+        },
+        {
+          "info": {
+            "name": "Get multiple runs by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/runs/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve multiple runs by their IDs in a single request. Returns found runs and lists any IDs that were not found or not owned. Maximum 100 IDs per request."
+        },
+        {
+          "info": {
+            "name": "Cancel multiple runs by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/runs/batch/cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cancel multiple runs by their IDs in a single request. Returns per-run results including cancelled runs, already-terminal runs, and not-found IDs. Maximum 100 IDs per request. Idempotent: calling twice returns consistent results."
+        },
+        {
+          "info": {
+            "name": "Get run by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.browser.tinyfish.ai/v1/runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Run ID"
+              },
+              {
+                "name": "screenshots",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include base64-encoded screenshots in steps. Defaults to none."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get detailed information about a specific automation run by its ID."
+        },
+        {
+          "info": {
+            "name": "Cancel run by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Run ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cancel a run by ID. Only runs created via `/v1/automation/run-async` or `/v1/automation/run-sse` can be cancelled. Runs created via the synchronous `/v1/automation/run` endpoint cannot be cancelled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

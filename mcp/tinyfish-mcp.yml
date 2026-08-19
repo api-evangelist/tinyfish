@@ -11,54 +11,60 @@ server:
 install:
   claude_code: claude mcp add --transport http tinyfish https://agent.tinyfish.ai/mcp
   cursor_codex_windsurf: npx install-mcp@latest
-notes: >-
-  Official hosted/remote MCP server exposing the TinyFish Agent, Search, Fetch
-  and Browser surfaces to AI assistants. A separate open-source local MCP server
-  for AgentQL data extraction is published on npm as `agentql-mcp`.
+notes: Official hosted/remote MCP server exposing the TinyFish Agent, Search, Fetch and Browser surfaces
+  to AI assistants. A separate open-source local MCP server for AgentQL data extraction is published on
+  npm as `agentql-mcp`.
 tools:
-  - name: run_web_automation
-    description: Run a browser automation goal synchronously.
-    source_operation: openapi/tinyfish-main-openapi.json#run
-  - name: run_web_automation_async
-    description: Start an automation run asynchronously and return a run_id.
-    source_operation: openapi/tinyfish-main-openapi.json#runAsync
-  - name: get_run
-    description: Get details for a run by ID.
-    source_operation: openapi/tinyfish-main-openapi.json#getRunById
-  - name: list_runs
-    description: List and search automation runs.
-    source_operation: openapi/tinyfish-main-openapi.json#listRuns
-  - name: cancel_run
-    description: Cancel a run by ID.
-    source_operation: openapi/tinyfish-main-openapi.json#cancelRunById
-  - name: batch_create
-    description: Start multiple automations in one request.
-    source_operation: openapi/tinyfish-main-openapi.json#runBatch
-  - name: batch_status
-    description: Get multiple runs by IDs.
-    source_operation: openapi/tinyfish-main-openapi.json#batchGetRuns
-  - name: batch_cancel
-    description: Cancel multiple runs by IDs.
-    source_operation: openapi/tinyfish-main-openapi.json#batchCancelRuns
-  - name: search
-    description: Search the web and get structured results.
-    source_operation: openapi/tinyfish-search-openapi.json#search
-  - name: run_big_search
-    description: Large/deep web search.
-  - name: get_search_result
-    description: Retrieve a search result.
-  - name: get_search_usage
-    description: List search usage records.
-    source_operation: openapi/tinyfish-search-openapi.json#listSearchUsage
-  - name: fetch_content
-    description: Fetch and extract clean content from URLs.
-    source_operation: openapi/tinyfish-fetch-openapi.json#fetchUrls
-  - name: list_fetch_usage
-    description: List fetch usage records.
-    source_operation: openapi/tinyfish-fetch-openapi.json#listFetchUsage
-  - name: create_browser_session
-    description: Create a remote cloud browser session (CDP).
-    source_operation: openapi/tinyfish-browser-openapi.json#createBrowserSession
-  - name: list_browser_sessions
-    description: List browser session usage.
-    source_operation: openapi/tinyfish-browser-openapi.json#listBrowserUsage
+- name: run_web_automation
+  description: Run a browser automation goal synchronously.
+  source_operation: openapi/tinyfish-main-openapi.json#run
+- name: run_web_automation_async
+  description: Start an automation run asynchronously and return a run_id.
+  source_operation: openapi/tinyfish-main-openapi.json#runAsync
+- name: get_run
+  description: Get details for a run by ID.
+  source_operation: openapi/tinyfish-main-openapi.json#getRunById
+- name: list_runs
+  description: List and search automation runs.
+  source_operation: openapi/tinyfish-main-openapi.json#listRuns
+- name: cancel_run
+  description: Cancel a run by ID.
+  source_operation: openapi/tinyfish-main-openapi.json#cancelRunById
+- name: batch_create
+  description: Start multiple automations in one request.
+  source_operation: openapi/tinyfish-main-openapi.json#runBatch
+- name: batch_status
+  description: Get multiple runs by IDs.
+  source_operation: openapi/tinyfish-main-openapi.json#batchGetRuns
+- name: batch_cancel
+  description: Cancel multiple runs by IDs.
+  source_operation: openapi/tinyfish-main-openapi.json#batchCancelRuns
+- name: search
+  description: Search the web and get structured results.
+  source_operation: openapi/tinyfish-search-openapi.json#search
+- name: run_big_search
+  description: Large/deep web search.
+- name: get_search_result
+  description: Retrieve a search result.
+- name: get_search_usage
+  description: List search usage records.
+  source_operation: openapi/tinyfish-search-openapi.json#listSearchUsage
+- name: fetch_content
+  description: Fetch and extract clean content from URLs.
+  source_operation: openapi/tinyfish-fetch-openapi.json#fetchUrls
+- name: list_fetch_usage
+  description: List fetch usage records.
+  source_operation: openapi/tinyfish-fetch-openapi.json#listFetchUsage
+- name: create_browser_session
+  description: Create a remote cloud browser session (CDP).
+  source_operation: openapi/tinyfish-browser-openapi.json#createBrowserSession
+- name: list_browser_sessions
+  description: List browser session usage.
+  source_operation: openapi/tinyfish-browser-openapi.json#listBrowserUsage
+deployment:
+  mode: remote
+  endpoint: https://agent.tinyfish.ai/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

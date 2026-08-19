@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Automation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run browser automation with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/automation/run-sse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Execute a browser automation task with Server-Sent Events (SSE) streaming. Returns a real-time event stream with automation progress, browser streaming URL, and final results."
+        },
+        {
+          "info": {
+            "name": "Run browser automation synchronously",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/automation/run",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Execute a browser automation task synchronously and wait for completion. Returns the final result once the automation finishes (success or failure). Use this endpoint when you need the complete result in a single response. Note: Runs created via this endpoint cannot be cancelled. If you need cancellation support, use `/v1/automation/run-async` or `/v1/automation/run-sse` instead."
+        },
+        {
+          "info": {
+            "name": "Start automation asynchronously",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/automation/run-async",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates and enqueues an automation run, returning the run_id immediately without waiting for completion. Use this for long-running automations where you want to poll for results separately."
+        },
+        {
+          "info": {
+            "name": "Start multiple automations asynchronously",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/v1/automation/run-batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates and enqueues multiple automation runs in a single request, returning run_ids immediately without waiting for completion. Maximum 100 runs per request.\n\n**Atomic creation:** Run creation is all-or-nothing. Either all runs are created successfully, or none are (returns error).\n\n**Idempotency:** This endpoint does not currently support idempotency keys. Retrying a failed request may create duplicate runs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,351 @@
+{
+  "item": [
+    {
+      "id": "747de25c-4e4f-4e66-8bb9-94beff45c39c",
+      "name": "TinyFish Fetch API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3e176603-510e-4ba2-bac6-0f0b82f9503f",
+          "name": "Fetch and extract content from URLs",
+          "request": {
+            "name": "Fetch and extract content from URLs",
+            "description": {
+              "content": "Renders web pages using a real browser (including JavaScript-heavy sites) and returns clean extracted content in your preferred format. Submit up to 10 URLs, get back structured content. Per-URL failures appear in `errors[]` and do not fail the entire request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"urls\": [\n    \"<uri>\"\n  ],\n  \"format\": \"markdown\",\n  \"links\": false,\n  \"image_links\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8a4e364d-87b4-47a0-a76d-8c92e0b478c8",
+              "name": "Fetch completed. Check `errors[]` for any per-URL failures.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://example.org\"\n  ],\n  \"format\": \"markdown\",\n  \"links\": false,\n  \"image_links\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"url\": \"https://example.com\",\n      \"final_url\": \"https://www.example.com\",\n      \"title\": \"Example Domain\",\n      \"description\": \"This domain is for use in illustrative examples.\",\n      \"language\": \"en\",\n      \"format\": \"markdown\",\n      \"text\": \"string\",\n      \"author\": \"John Doe\",\n      \"published_date\": \"2024-01-15\",\n      \"links\": [\n        \"string\",\n        \"string\"\n      ],\n      \"image_links\": [\n        \"string\",\n        \"string\"\n      ],\n      \"latency_ms\": 1183.4\n    },\n    {\n      \"url\": \"https://example.com\",\n      \"final_url\": \"https://www.example.com\",\n      \"title\": \"Example Domain\",\n      \"description\": \"This domain is for use in illustrative examples.\",\n      \"language\": \"en\",\n      \"format\": \"markdown\",\n      \"text\": \"string\",\n      \"author\": \"John Doe\",\n      \"published_date\": \"2024-01-15\",\n      \"links\": [\n        \"string\",\n        \"string\"\n      ],\n      \"image_links\": [\n        \"string\",\n        \"string\"\n      ],\n      \"latency_ms\": 1183.4\n    }\n  ],\n  \"errors\": [\n    {\n      \"url\": \"https://invalid.example.com\",\n      \"error\": \"Failed to fetch resource\"\n    },\n    {\n      \"url\": \"https://invalid.example.com\",\n      \"error\": \"Failed to fetch resource\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "216164ca-fe48-4302-9579-4eff98de3a63",
+              "name": "Invalid request — missing urls, too many URLs, or bad parameter value",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://example.org\"\n  ],\n  \"format\": \"markdown\",\n  \"links\": false,\n  \"image_links\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f22315a-0a42-4138-9354-8c6bfc6584f9",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://example.org\"\n  ],\n  \"format\": \"markdown\",\n  \"links\": false,\n  \"image_links\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2717b3ed-79c0-4f55-8fa7-acc2b1b05216",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://example.org\"\n  ],\n  \"format\": \"markdown\",\n  \"links\": false,\n  \"image_links\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b553b36a-27ae-411c-a9d1-631119e66d48",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://example.org\"\n  ],\n  \"format\": \"markdown\",\n  \"links\": false,\n  \"image_links\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.browser.tinyfish.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1d5f3a40-71d1-4580-ba93-52618c637fad",
+    "name": "TinyFish Browser Automation TinyFish Fetch API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Create remote browser sessions for direct Playwright/CDP control.\n\nContact Support:\n Name: TinyFish Support\n Email: support@tinyfish.ai",
+      "type": "text/plain"
+    }
+  }
+}

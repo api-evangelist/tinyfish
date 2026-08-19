@@ -1,0 +1,1303 @@
+{
+  "item": [
+    {
+      "id": "5a0c5ed9-fbe6-431f-825f-14304a56c93b",
+      "name": "Automation",
+      "description": {
+        "content": "Browser automation endpoints for executing tasks on websites",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3c15cdd6-713b-4a2b-ba68-cfa3b7bc31d0",
+          "name": "Run browser automation with SSE streaming",
+          "request": {
+            "name": "Run browser automation with SSE streaming",
+            "description": {
+              "content": "Execute a browser automation task with Server-Sent Events (SSE) streaming. Returns a real-time event stream with automation progress, browser streaming URL, and final results.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "automation",
+                "run-sse"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"goal\": \"<string>\",\n  \"browser_profile\": \"<string>\",\n  \"proxy_config\": {\n    \"enabled\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"country_code\": \"<string>\",\n    \"url\": \"<uri>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"<string>\",\n  \"agent_config\": {\n    \"mode\": \"<string>\",\n    \"max_steps\": \"<integer>\"\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": \"<boolean>\",\n  \"credential_item_ids\": [\n    \"<string>\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dbeea098-9ef8-4e54-acd2-0a4ab0c503e8",
+              "name": "Server-Sent Events stream. Stream sends STARTED, STREAMING_URL (optional), PROGRESS (intermediate events with purpose), COMPLETE events, plus periodic HEARTBEAT messages.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-sse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/event-stream"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/event-stream"
+                }
+              ],
+              "body": "data: {\"type\":\"STARTED\",\"run_id\":\"run_123\",\"timestamp\":\"2025-01-01T00:00:00Z\"}\n\ndata: {\"type\":\"STREAMING_URL\",\"run_id\":\"run_123\",\"streaming_url\":\"https://...\",\"timestamp\":\"...\"}\n\ndata: {\"type\":\"PROGRESS\",\"run_id\":\"run_123\",\"purpose\":\"Clicking submit button\",\"timestamp\":\"...\"}\n\ndata: {\"type\":\"COMPLETE\",\"run_id\":\"run_123\",\"status\":\"COMPLETED\",\"result\":{...},\"timestamp\":\"...\"}",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "82b2e1bb-3bf3-4d3c-9389-8aaaee6d6fa2",
+              "name": "Invalid request - missing required fields or invalid format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-sse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d559f49-a806-426f-9737-11225114648b",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-sse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c33e06b-ae7a-4e89-9780-19586e56110e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-sse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1f991d6-a8a0-4a25-9136-a293fd151297",
+          "name": "Run browser automation synchronously",
+          "request": {
+            "name": "Run browser automation synchronously",
+            "description": {
+              "content": "Execute a browser automation task synchronously and wait for completion. Returns the final result once the automation finishes (success or failure). Use this endpoint when you need the complete result in a single response. Note: Runs created via this endpoint cannot be cancelled. If you need cancellation support, use `/v1/automation/run-async` or `/v1/automation/run-sse` instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "automation",
+                "run"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"goal\": \"<string>\",\n  \"browser_profile\": \"<string>\",\n  \"proxy_config\": {\n    \"enabled\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"country_code\": \"<string>\",\n    \"url\": \"<uri>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"<string>\",\n  \"agent_config\": {\n    \"mode\": \"<string>\",\n    \"max_steps\": \"<integer>\"\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": \"<boolean>\",\n  \"credential_item_ids\": [\n    \"<string>\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4bdb27ea-20ab-4d48-b39f-9b096252aa51",
+              "name": "Automation completed successfully. Returns run details and the extracted result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"status\": \"COMPLETED\",\n  \"started_at\": \"2024-01-01T00:00:00Z\",\n  \"finished_at\": \"2024-01-01T00:00:30Z\",\n  \"num_of_steps\": 5,\n  \"result\": {\n    \"product\": \"iPhone 15\",\n    \"price\": \"$799\"\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40464ca4-265d-4693-ad0d-5a07cb361746",
+              "name": "Invalid request - missing required fields or invalid format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97ac87bc-9c88-4b36-bc1d-895ac1870361",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "313db9db-8f3b-4a7a-b176-ee353f4392a8",
+              "name": "Forbidden - Insufficient credits or no active subscription",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73fbfce1-0442-44f5-a13e-8aad655e147f",
+              "name": "Server error - Automation failed during execution or internal infrastructure error occurred. Returns run details with error. For infrastructure errors (before run creation), run_id will be null and timestamps will be null.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"status\": \"FAILED\",\n  \"started_at\": \"2024-01-01T00:00:00Z\",\n  \"finished_at\": \"2024-01-01T00:00:15Z\",\n  \"num_of_steps\": 3,\n  \"result\": null,\n  \"error\": {\n    \"message\": \"Browser crashed during execution\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ab07ab97-db94-4dce-b9fe-1f0edae41c5b",
+          "name": "Start automation asynchronously",
+          "request": {
+            "name": "Start automation asynchronously",
+            "description": {
+              "content": "Creates and enqueues an automation run, returning the run_id immediately without waiting for completion. Use this for long-running automations where you want to poll for results separately.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "automation",
+                "run-async"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"goal\": \"<string>\",\n  \"browser_profile\": \"<string>\",\n  \"proxy_config\": {\n    \"enabled\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"country_code\": \"<string>\",\n    \"url\": \"<uri>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"<string>\",\n  \"agent_config\": {\n    \"mode\": \"<string>\",\n    \"max_steps\": \"<integer>\"\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": \"<boolean>\",\n  \"credential_item_ids\": [\n    \"<string>\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "15592007-e3fa-40ca-af83-d0ec440db47f",
+              "name": "Run created and enqueued successfully. Returns run_id immediately. The automation will execute asynchronously.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f98043e-dbf4-44de-9712-367636f6fba0",
+              "name": "Invalid request - missing required fields or invalid format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90aa1903-453d-47eb-abb2-e0cf56db7863",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f078e41f-7106-4e42-80cb-a4a5829792da",
+              "name": "Forbidden - Insufficient credits or no active subscription",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac2b52e4-c33d-49c3-a3dc-a72988365a9e",
+              "name": "Internal server error - Failed to create or enqueue the automation run",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"goal\": \"Find the pricing page and extract all plan details\",\n  \"browser_profile\": \"lite\",\n  \"proxy_config\": {\n    \"enabled\": true,\n    \"type\": \"custom\",\n    \"country_code\": \"US\",\n    \"url\": \"http://proxy.example.com:8080\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"api_integration\": \"dify\",\n  \"agent_config\": {\n    \"mode\": \"strict\",\n    \"max_steps\": 50\n  },\n  \"capture_config\": {\n    \"elements\": \"<boolean>\",\n    \"snapshots\": \"<boolean>\",\n    \"screenshots\": \"<boolean>\",\n    \"recording\": \"<boolean>\"\n  },\n  \"webhook_url\": \"<uri>\",\n  \"use_vault\": true,\n  \"credential_item_ids\": [\n    \"cred:conn-abc:Work:item-123\",\n    \"cred:conn-def:Personal:item-456\"\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17e7ec01-35c3-41e0-9c12-ac5a900ac65d",
+          "name": "Start multiple automations asynchronously",
+          "request": {
+            "name": "Start multiple automations asynchronously",
+            "description": {
+              "content": "Creates and enqueues multiple automation runs in a single request, returning run_ids immediately without waiting for completion. Maximum 100 runs per request.\n\n**Atomic creation:** Run creation is all-or-nothing. Either all runs are created successfully, or none are (returns error).\n\n**Idempotency:** This endpoint does not currently support idempotency keys. Retrying a failed request may create duplicate runs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "automation",
+                "run-batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"runs\": [\n    {\n      \"url\": \"<uri>\",\n      \"goal\": \"<string>\",\n      \"browser_profile\": \"<string>\",\n      \"proxy_config\": {\n        \"enabled\": \"<boolean>\",\n        \"type\": \"<string>\",\n        \"country_code\": \"<string>\",\n        \"url\": \"<uri>\",\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"api_integration\": \"<string>\",\n      \"agent_config\": {\n        \"mode\": \"<string>\",\n        \"max_steps\": \"<integer>\"\n      },\n      \"capture_config\": {\n        \"elements\": \"<boolean>\",\n        \"snapshots\": \"<boolean>\",\n        \"screenshots\": \"<boolean>\",\n        \"recording\": \"<boolean>\"\n      },\n      \"webhook_url\": \"<uri>\",\n      \"use_vault\": \"<boolean>\",\n      \"credential_item_ids\": [\n        \"<string>\"\n      ]\n    }\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ab2133b8-142c-413e-8c7c-319d2cc665d1",
+              "name": "All runs created and enqueued successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"runs\": [\n    {\n      \"url\": \"https://example.com\",\n      \"goal\": \"Find the pricing page and extract all plan details\",\n      \"browser_profile\": \"lite\",\n      \"proxy_config\": {\n        \"enabled\": true,\n        \"type\": \"custom\",\n        \"country_code\": \"US\",\n        \"url\": \"http://proxy.example.com:8080\",\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"api_integration\": \"dify\",\n      \"agent_config\": {\n        \"mode\": \"strict\",\n        \"max_steps\": 50\n      },\n      \"capture_config\": {\n        \"elements\": \"<boolean>\",\n        \"snapshots\": \"<boolean>\",\n        \"screenshots\": \"<boolean>\",\n        \"recording\": \"<boolean>\"\n      },\n      \"webhook_url\": \"<uri>\",\n      \"use_vault\": true,\n      \"credential_item_ids\": [\n        \"cred:conn-abc:Work:item-123\",\n        \"cred:conn-def:Personal:item-456\"\n      ]\n    }\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_ids\": [\n    \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"b2c3d4e5-f6a7-8901-bcde-f23456789012\"\n  ],\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d5e3de3-ac99-4fe7-8ad9-6920da037ca9",
+              "name": "Invalid request - missing required fields, invalid format, or exceeds 100 runs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"runs\": [\n    {\n      \"url\": \"https://example.com\",\n      \"goal\": \"Find the pricing page and extract all plan details\",\n      \"browser_profile\": \"lite\",\n      \"proxy_config\": {\n        \"enabled\": true,\n        \"type\": \"custom\",\n        \"country_code\": \"US\",\n        \"url\": \"http://proxy.example.com:8080\",\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"api_integration\": \"dify\",\n      \"agent_config\": {\n        \"mode\": \"strict\",\n        \"max_steps\": 50\n      },\n      \"capture_config\": {\n        \"elements\": \"<boolean>\",\n        \"snapshots\": \"<boolean>\",\n        \"screenshots\": \"<boolean>\",\n        \"recording\": \"<boolean>\"\n      },\n      \"webhook_url\": \"<uri>\",\n      \"use_vault\": true,\n      \"credential_item_ids\": [\n        \"cred:conn-abc:Work:item-123\",\n        \"cred:conn-def:Personal:item-456\"\n      ]\n    }\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6829adcd-6138-4fcc-881d-4fbc1d934819",
+              "name": "Unauthorized - Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"runs\": [\n    {\n      \"url\": \"https://example.com\",\n      \"goal\": \"Find the pricing page and extract all plan details\",\n      \"browser_profile\": \"lite\",\n      \"proxy_config\": {\n        \"enabled\": true,\n        \"type\": \"custom\",\n        \"country_code\": \"US\",\n        \"url\": \"http://proxy.example.com:8080\",\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"api_integration\": \"dify\",\n      \"agent_config\": {\n        \"mode\": \"strict\",\n        \"max_steps\": 50\n      },\n      \"capture_config\": {\n        \"elements\": \"<boolean>\",\n        \"snapshots\": \"<boolean>\",\n        \"screenshots\": \"<boolean>\",\n        \"recording\": \"<boolean>\"\n      },\n      \"webhook_url\": \"<uri>\",\n      \"use_vault\": true,\n      \"credential_item_ids\": [\n        \"cred:conn-abc:Work:item-123\",\n        \"cred:conn-def:Personal:item-456\"\n      ]\n    }\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37d28d0f-16ec-45d6-ab9f-cfac2a846b4e",
+              "name": "Forbidden - Insufficient credits for the requested number of runs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"runs\": [\n    {\n      \"url\": \"https://example.com\",\n      \"goal\": \"Find the pricing page and extract all plan details\",\n      \"browser_profile\": \"lite\",\n      \"proxy_config\": {\n        \"enabled\": true,\n        \"type\": \"custom\",\n        \"country_code\": \"US\",\n        \"url\": \"http://proxy.example.com:8080\",\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"api_integration\": \"dify\",\n      \"agent_config\": {\n        \"mode\": \"strict\",\n        \"max_steps\": 50\n      },\n      \"capture_config\": {\n        \"elements\": \"<boolean>\",\n        \"snapshots\": \"<boolean>\",\n        \"screenshots\": \"<boolean>\",\n        \"recording\": \"<boolean>\"\n      },\n      \"webhook_url\": \"<uri>\",\n      \"use_vault\": true,\n      \"credential_item_ids\": [\n        \"cred:conn-abc:Work:item-123\",\n        \"cred:conn-def:Personal:item-456\"\n      ]\n    }\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efaeca4a-a579-418b-b25c-85fd828be5a1",
+              "name": "Internal server error - Failed to create or enqueue any runs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "automation",
+                    "run-batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"runs\": [\n    {\n      \"url\": \"https://example.com\",\n      \"goal\": \"Find the pricing page and extract all plan details\",\n      \"browser_profile\": \"lite\",\n      \"proxy_config\": {\n        \"enabled\": true,\n        \"type\": \"custom\",\n        \"country_code\": \"US\",\n        \"url\": \"http://proxy.example.com:8080\",\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"api_integration\": \"dify\",\n      \"agent_config\": {\n        \"mode\": \"strict\",\n        \"max_steps\": 50\n      },\n      \"capture_config\": {\n        \"elements\": \"<boolean>\",\n        \"snapshots\": \"<boolean>\",\n        \"screenshots\": \"<boolean>\",\n        \"recording\": \"<boolean>\"\n      },\n      \"webhook_url\": \"<uri>\",\n      \"use_vault\": true,\n      \"credential_item_ids\": [\n        \"cred:conn-abc:Work:item-123\",\n        \"cred:conn-def:Personal:item-456\"\n      ]\n    }\n  ],\n  \"output_schema\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INVALID_INPUT\",\n    \"message\": \"Field \\\"url\\\" is required and must be a string\",\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.browser.tinyfish.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2adbea04-0793-430a-ad1d-758dbb24bcf9",
+    "name": "TinyFish Browser Automation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Create remote browser sessions for direct Playwright/CDP control.\n\nContact Support:\n Name: TinyFish Support\n Email: support@tinyfish.ai",
+      "type": "text/plain"
+    }
+  }
+}

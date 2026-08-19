@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation TinyFish Browser API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TinyFish Browser API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a remote browser session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.browser.tinyfish.ai/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a remote tf-browser session and returns CDP connection details. Optionally accepts a target URL to select the best proxy for that domain. Connect to the browser via CDP WebSocket at `cdp_url`.\n\nUse `timeout_seconds` to set a custom inactivity timeout (5–86400 seconds). If omitted, null, or greater than your plan maximum, the plan maximum is used (15 min on free tier, 60 min on paid)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

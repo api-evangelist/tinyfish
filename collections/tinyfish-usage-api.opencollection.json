@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "TinyFish Browser Automation Usage API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List browser session usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.browser.tinyfish.ai/usage",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List Tetra browser session usage for the authenticated user. Returns session telemetry including duration, data transfer, mode, and status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

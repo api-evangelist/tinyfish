@@ -100,16 +100,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/tinyfish-tinyfish-browser-api-api-openapi.yml
-- aid: tinyfish:tinyfish-tinyfish-fetch-api-api
-  name: TinyFish Fetch API
-  description: The TinyFish Fetch API API from TinyFish — 1 operation(s) for tinyfish fetch api.
-  humanURL: https://docs.tinyfish.ai/agent-api
-  baseURL: https://agent.tinyfish.ai
-  tags:
-  - TinyFish Fetch API
-  properties:
-  - type: OpenAPI
-    url: openapi/tinyfish-tinyfish-fetch-api-api-openapi.yml
 - aid: tinyfish:tinyfish-tinyfish-search-api-api
   name: TinyFish Search API
   description: The TinyFish Search API API from TinyFish — 1 operation(s) for tinyfish search api.
@@ -132,8 +122,8 @@ apis:
     url: openapi/tinyfish-usage-api-openapi.yml
 - aid: tinyfish:tinyfish-vault-api
   name: TinyFish Vault API
-  description: Vault credential management endpoints for connecting password managers and managing stored
-    credentials
+  description: >-
+    Vault credential management endpoints for connecting password managers and managing stored credentials
   humanURL: https://docs.tinyfish.ai/agent-api
   baseURL: https://agent.tinyfish.ai
   tags:

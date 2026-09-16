@@ -1,15 +1,13 @@
 aid: tinyfish
 name: TinyFish
-description: >-
-  TinyFish provides enterprise infrastructure for AI web agents — a unified platform that lets
-  AI systems interact with the live web at scale. It ships four API surfaces: a Web Agent
-  Automation API that turns natural-language goals into browser automations on real websites
-  (sync, async, SSE-streaming, and batch), a Search API returning structured JSON from
-  browser-rendered results, a Fetch API that converts rendered pages to clean markdown/JSON/HTML,
-  and a Browser API for cloud CDP browser sessions with stealth/anti-bot capabilities. All APIs
-  authenticate with an X-API-Key header, are documented at docs.tinyfish.ai with published OpenAPI
-  specs and an llms.txt, and are exposed to assistants through an official hosted MCP server.
-  TinyFish is the company behind the open-source AgentQL project and is backed by ICONIQ Capital.
+description: 'TinyFish provides enterprise infrastructure for AI web agents — a unified platform that
+  lets AI systems interact with the live web at scale. It ships four API surfaces: a Web Agent Automation
+  API that turns natural-language goals into browser automations on real websites (sync, async, SSE-streaming,
+  and batch), a Search API returning structured JSON from browser-rendered results, a Fetch API that converts
+  rendered pages to clean markdown/JSON/HTML, and a Browser API for cloud CDP browser sessions with stealth/anti-bot
+  capabilities. All APIs authenticate with an X-API-Key header, are documented at docs.tinyfish.ai with
+  published OpenAPI specs and an llms.txt, and are exposed to assistants through an official hosted MCP
+  server. TinyFish is the company behind the open-source AgentQL project and is backed by ICONIQ Capital.'
 url: https://raw.githubusercontent.com/api-evangelist/tinyfish/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -45,7 +43,7 @@ accessModel:
 image: https://www.tinyfish.ai/favicon.ico
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-09-16'
 tags:
 - Company
 - Artificial Intelligence
@@ -93,7 +91,7 @@ apis:
   - type: OpenAPI
     url: openapi/tinyfish-runs-api-openapi.yml
 - aid: tinyfish:tinyfish-tinyfish-browser-api-api
-  name: TinyFish TinyFish Browser API API
+  name: TinyFish Browser API
   description: The TinyFish Browser API API from TinyFish — 1 operation(s) for tinyfish browser api.
   humanURL: https://docs.tinyfish.ai/agent-api
   baseURL: https://agent.tinyfish.ai
@@ -103,7 +101,7 @@ apis:
   - type: OpenAPI
     url: openapi/tinyfish-tinyfish-browser-api-api-openapi.yml
 - aid: tinyfish:tinyfish-tinyfish-fetch-api-api
-  name: TinyFish TinyFish Fetch API API
+  name: TinyFish Fetch API
   description: The TinyFish Fetch API API from TinyFish — 1 operation(s) for tinyfish fetch api.
   humanURL: https://docs.tinyfish.ai/agent-api
   baseURL: https://agent.tinyfish.ai
@@ -113,7 +111,7 @@ apis:
   - type: OpenAPI
     url: openapi/tinyfish-tinyfish-fetch-api-api-openapi.yml
 - aid: tinyfish:tinyfish-tinyfish-search-api-api
-  name: TinyFish TinyFish Search API API
+  name: TinyFish Search API
   description: The TinyFish Search API API from TinyFish — 1 operation(s) for tinyfish search api.
   humanURL: https://docs.tinyfish.ai/agent-api
   baseURL: https://agent.tinyfish.ai
@@ -134,8 +132,8 @@ apis:
     url: openapi/tinyfish-usage-api-openapi.yml
 - aid: tinyfish:tinyfish-vault-api
   name: TinyFish Vault API
-  description: >-
-    Vault credential management endpoints for connecting password managers and managing stored credentials
+  description: Vault credential management endpoints for connecting password managers and managing stored
+    credentials
   humanURL: https://docs.tinyfish.ai/agent-api
   baseURL: https://agent.tinyfish.ai
   tags:

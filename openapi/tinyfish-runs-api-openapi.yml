@@ -1,13 +1,14 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: TinyFish Browser Automation Runs API
+  title: TinyFish Web Agent Automation Runs API
   version: 1.0.0
-  description: Create remote browser sessions for direct Playwright/CDP control.
+  description: REST API for running AI-powered browser automations. Execute tasks on any website using natural language instructions.
   contact:
     name: TinyFish Support
     email: support@tinyfish.ai
 servers:
-- url: https://api.browser.tinyfish.ai
+- url: https://agent.tinyfish.ai
+  description: Production
 tags:
 - name: Runs
   description: Endpoints for retrieving automation run data
@@ -130,30 +131,34 @@ paths:
                           description: ISO 8601 timestamp when run was created
                           example: '2026-01-14T10:30:00Z'
                         started_at:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: ISO 8601 timestamp when run started executing
                           example: '2026-01-14T10:30:05Z'
                         finished_at:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: ISO 8601 timestamp when run finished
                           example: '2026-01-14T10:31:30Z'
                         num_of_steps:
-                          type: integer
-                          nullable: true
+                          type:
+                          - integer
+                          - 'null'
                           minimum: 0
                           description: Number of steps taken during the automation run. Null while the run is still in progress.
                           example: 5
                         result:
-                          type: object
-                          nullable: true
-                          additionalProperties:
-                            nullable: true
+                          type:
+                          - object
+                          - 'null'
+                          additionalProperties: {}
                           description: Extracted data from the automation run
                         schema_validation:
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             valid:
                               type: boolean
@@ -206,8 +211,9 @@ paths:
                               received: string
                               message: Expected number, received string
                         error:
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             code:
                               type: string
@@ -227,8 +233,9 @@ paths:
                               description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
                               example: SYSTEM_FAILURE
                             retry_after:
-                              type: number
-                              nullable: true
+                              type:
+                              - number
+                              - 'null'
                               description: Suggested retry delay in seconds (null if not retryable)
                               example: 60
                             help_url:
@@ -244,22 +251,26 @@ paths:
                           - category
                           description: Error details. Null if the run succeeded or is still running.
                         streaming_url:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: URL to watch live browser session (available while running)
                           example: https://stream.agent.tinyfish.ai/session/xyz
                         browser_config:
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             proxy_enabled:
-                              type: boolean
-                              nullable: true
+                              type:
+                              - boolean
+                              - 'null'
                               description: Whether proxy was enabled
                               example: false
                             proxy_country_code:
-                              type: string
-                              nullable: true
+                              type:
+                              - string
+                              - 'null'
                               description: Country code for proxy
                               example: US
                           required:
@@ -289,8 +300,9 @@ paths:
                         description: Total number of runs matching the current filters
                         example: 142
                       next_cursor:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                         description: Cursor for fetching next page. Null if no more results.
                         example: eyJpZCI6ImFiYyIsImNyZWF0ZWRBdCI6IjIwMjYtMDEtMDFUMTI6MDA6MDBaIn0=
                       has_more:
@@ -342,7 +354,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -386,7 +397,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -430,7 +440,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -503,30 +512,34 @@ paths:
                           description: ISO 8601 timestamp when run was created
                           example: '2026-01-14T10:30:00Z'
                         started_at:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: ISO 8601 timestamp when run started executing
                           example: '2026-01-14T10:30:05Z'
                         finished_at:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: ISO 8601 timestamp when run finished
                           example: '2026-01-14T10:31:30Z'
                         num_of_steps:
-                          type: integer
-                          nullable: true
+                          type:
+                          - integer
+                          - 'null'
                           minimum: 0
                           description: Number of steps taken during the automation run. Null while the run is still in progress.
                           example: 5
                         result:
-                          type: object
-                          nullable: true
-                          additionalProperties:
-                            nullable: true
+                          type:
+                          - object
+                          - 'null'
+                          additionalProperties: {}
                           description: Extracted data from the automation run
                         schema_validation:
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             valid:
                               type: boolean
@@ -579,8 +592,9 @@ paths:
                               received: string
                               message: Expected number, received string
                         error:
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             code:
                               type: string
@@ -600,8 +614,9 @@ paths:
                               description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
                               example: SYSTEM_FAILURE
                             retry_after:
-                              type: number
-                              nullable: true
+                              type:
+                              - number
+                              - 'null'
                               description: Suggested retry delay in seconds (null if not retryable)
                               example: 60
                             help_url:
@@ -617,22 +632,26 @@ paths:
                           - category
                           description: Error details. Null if the run succeeded or is still running.
                         streaming_url:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: URL to watch live browser session (available while running)
                           example: https://stream.agent.tinyfish.ai/session/xyz
                         browser_config:
-                          type: object
-                          nullable: true
+                          type:
+                          - object
+                          - 'null'
                           properties:
                             proxy_enabled:
-                              type: boolean
-                              nullable: true
+                              type:
+                              - boolean
+                              - 'null'
                               description: Whether proxy was enabled
                               example: false
                             proxy_country_code:
-                              type: string
-                              nullable: true
+                              type:
+                              - string
+                              - 'null'
                               description: Country code for proxy
                               example: US
                           required:
@@ -640,8 +659,9 @@ paths:
                           - proxy_country_code
                           description: Browser configuration used for the run
                         video_url:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Presigned URL to the video recording of this run. Null if no recording is available. URL expires after 15 minutes.
                           example: https://s3.amazonaws.com/bucket/eva-traces/run-id/video/recording.webm?...
                         steps:
@@ -668,18 +688,21 @@ paths:
                                 description: Current status of the run
                                 example: COMPLETED
                               action:
-                                type: string
-                                nullable: true
+                                type:
+                                - string
+                                - 'null'
                                 description: Description of the action taken in this step
                                 example: Click the login button
                               screenshot:
-                                type: string
-                                nullable: true
+                                type:
+                                - string
+                                - 'null'
                                 description: Base64-encoded JPEG screenshot at this step (data:image/jpeg;base64,...). Null if screenshots=none or no screenshot available.
                                 example: data:image/jpeg;base64,/9j/4AAQSkZJRgAB...
                               duration:
-                                type: string
-                                nullable: true
+                                type:
+                                - string
+                                - 'null'
                                 description: Time taken for this step
                                 example: 1.2s
                             required:
@@ -709,8 +732,9 @@ paths:
                       description: A single automation run
                     description: Found runs
                   not_found:
-                    type: array
-                    nullable: true
+                    type:
+                    - array
+                    - 'null'
                     items:
                       type: string
                     description: Run IDs that were not found or not owned. Null if all found.
@@ -768,7 +792,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -812,7 +835,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -856,7 +878,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -919,13 +940,15 @@ paths:
                           description: The current status of the run. Returns actual status for idempotent responses (e.g., COMPLETED if run already finished)
                           example: CANCELLED
                         cancelled_at:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: ISO 8601 timestamp when the run was cancelled, or null if not cancelled
                           example: '2026-01-14T10:30:55Z'
                         message:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Additional context about the cancellation result (e.g., "Run already cancelled", "Run already finished")
                           example: Run already cancelled
                       required:
@@ -936,8 +959,9 @@ paths:
                       description: Response from cancel run endpoint
                     description: Results for runs that were found and processed (cancelled or already terminal)
                   not_found:
-                    type: array
-                    nullable: true
+                    type:
+                    - array
+                    - 'null'
                     items:
                       type: string
                     description: Run IDs that were not found or not owned. Null if all found.
@@ -993,7 +1017,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1037,7 +1060,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1081,7 +1103,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1151,30 +1172,34 @@ paths:
                     description: ISO 8601 timestamp when run was created
                     example: '2026-01-14T10:30:00Z'
                   started_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when run started executing
                     example: '2026-01-14T10:30:05Z'
                   finished_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when run finished
                     example: '2026-01-14T10:31:30Z'
                   num_of_steps:
-                    type: integer
-                    nullable: true
+                    type:
+                    - integer
+                    - 'null'
                     minimum: 0
                     description: Number of steps taken during the automation run. Null while the run is still in progress.
                     example: 5
                   result:
-                    type: object
-                    nullable: true
-                    additionalProperties:
-                      nullable: true
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: {}
                     description: Extracted data from the automation run
                   schema_validation:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       valid:
                         type: boolean
@@ -1227,8 +1252,9 @@ paths:
                         received: string
                         message: Expected number, received string
                   error:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       code:
                         type: string
@@ -1248,8 +1274,9 @@ paths:
                         description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
                         example: SYSTEM_FAILURE
                       retry_after:
-                        type: number
-                        nullable: true
+                        type:
+                        - number
+                        - 'null'
                         description: Suggested retry delay in seconds (null if not retryable)
                         example: 60
                       help_url:
@@ -1265,22 +1292,26 @@ paths:
                     - category
                     description: Error details. Null if the run succeeded or is still running.
                   streaming_url:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: URL to watch live browser session (available while running)
                     example: https://stream.agent.tinyfish.ai/session/xyz
                   browser_config:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       proxy_enabled:
-                        type: boolean
-                        nullable: true
+                        type:
+                        - boolean
+                        - 'null'
                         description: Whether proxy was enabled
                         example: false
                       proxy_country_code:
-                        type: string
-                        nullable: true
+                        type:
+                        - string
+                        - 'null'
                         description: Country code for proxy
                         example: US
                     required:
@@ -1288,8 +1319,9 @@ paths:
                     - proxy_country_code
                     description: Browser configuration used for the run
                   video_url:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: Presigned URL to the video recording of this run. Null if no recording is available. URL expires after 15 minutes.
                     example: https://s3.amazonaws.com/bucket/eva-traces/run-id/video/recording.webm?...
                   steps:
@@ -1316,18 +1348,21 @@ paths:
                           description: Current status of the run
                           example: COMPLETED
                         action:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Description of the action taken in this step
                           example: Click the login button
                         screenshot:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Base64-encoded JPEG screenshot at this step (data:image/jpeg;base64,...). Null if screenshots=none or no screenshot available.
                           example: data:image/jpeg;base64,/9j/4AAQSkZJRgAB...
                         duration:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           description: Time taken for this step
                           example: 1.2s
                       required:
@@ -1391,7 +1426,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1435,7 +1469,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1479,7 +1512,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1527,13 +1559,15 @@ paths:
                     description: The current status of the run. Returns actual status for idempotent responses (e.g., COMPLETED if run already finished)
                     example: CANCELLED
                   cancelled_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when the run was cancelled, or null if not cancelled
                     example: '2026-01-14T10:30:55Z'
                   message:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: Additional context about the cancellation result (e.g., "Run already cancelled", "Run already finished")
                     example: Run already cancelled
                 required:
@@ -1600,7 +1634,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1644,7 +1677,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1688,7 +1720,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code

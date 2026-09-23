@@ -1,0 +1,33 @@
+# Front Door AI Index — tinyfish — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: tinyfish
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.tinyfish.ai
+  final_host: www.tinyfish.ai
+  ownership: own
+  owner: tinyfish
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 81
+  host_score: 81
+  density: 22.27
+  words: 3637
+  tiers:
+    agentic: 25
+    core: 54
+    model: 2
+  ambiguous: 83
+  top_terms:
+    agent: 69
+    AI: 52
+    AI agent: 18
+    intelligence: 8
+    automation: 6
+    agentic: 4
+    MCP: 3
+    Claude: 2
+    LLMs: 2

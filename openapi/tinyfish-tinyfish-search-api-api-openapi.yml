@@ -1,13 +1,13 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: TinyFish Browser Automation TinyFish Search API API
+  title: TinyFish Search API
   version: 1.0.0
-  description: Create remote browser sessions for direct Playwright/CDP control.
+  description: Get structured ranked web results for a query.
   contact:
     name: TinyFish Support
     email: support@tinyfish.ai
 servers:
-- url: https://api.browser.tinyfish.ai
+- url: https://api.search.tinyfish.ai
 tags:
 - name: TinyFish Search API
 paths:
@@ -153,7 +153,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -197,7 +196,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -241,7 +239,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -285,7 +282,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -329,7 +325,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -373,7 +368,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -417,7 +411,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -461,7 +454,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code

@@ -1,26 +1,45 @@
 {
   "provider": "tinyfish",
   "sources": [
-    "tinyfish-automation-api-openapi.yml",
-    "tinyfish-runs-api-openapi.yml",
-    "tinyfish-tinyfish-browser-api-api-openapi.yml",
-    "tinyfish-tinyfish-fetch-api-api-openapi.yml",
-    "tinyfish-tinyfish-search-api-api-openapi.yml",
-    "tinyfish-usage-api-openapi.yml",
-    "tinyfish-vault-api-openapi.yml"
+    "_original/tinyfish-browser-openapi.json",
+    "_original/tinyfish-main-openapi.json",
+    "_original/tinyfish-search-openapi.json"
   ],
   "outputs": [
+    "tinyfish-tinyfish-browser-api-api-openapi.yml",
+    "tinyfish-usage-api-openapi.yml",
     "tinyfish-automation-api-openapi.yml",
     "tinyfish-runs-api-openapi.yml",
-    "tinyfish-tinyfish-browser-api-api-openapi.yml",
-    "tinyfish-tinyfish-fetch-api-api-openapi.yml",
-    "tinyfish-tinyfish-search-api-api-openapi.yml",
-    "tinyfish-usage-api-openapi.yml",
-    "tinyfish-vault-api-openapi.yml"
+    "tinyfish-vault-api-openapi.yml",
+    "tinyfish-tinyfish-search-api-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "tinyfish-browser-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "tinyfish-browser-openapi.json: tagged paths POST / -> TinyFish Browser API",
+    "tinyfish-browser-openapi.json: tagged paths GET /usage -> Usage",
+    "tinyfish-browser-openapi.json: declared missing tag: TinyFish Browser API",
+    "tinyfish-browser-openapi.json: declared missing tag: Usage",
+    "tinyfish-main-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "tinyfish-search-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "tinyfish-search-openapi.json: tagged paths GET / -> TinyFish Search API",
+    "tinyfish-search-openapi.json: tagged paths GET /usage -> Usage",
+    "tinyfish-search-openapi.json: declared missing tag: TinyFish Search API",
+    "tinyfish-search-openapi.json: declared missing tag: Usage",
+    "tag 'Usage' spans 2 source specs (tinyfish-browser-openapi.json, tinyfish-search-openapi.json): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/tinyfish-fetch-openapi.json: archived document superseded by a larger archived document",
+    "tinyfish-automation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tinyfish-runs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tinyfish-tinyfish-browser-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tinyfish-tinyfish-search-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tinyfish-usage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "tinyfish-vault-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

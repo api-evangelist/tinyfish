@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: TinyFish Browser Automation TinyFish Browser API API
+  title: TinyFish Browser API
   version: 1.0.0
   description: Create remote browser sessions for direct Playwright/CDP control.
   contact:
@@ -34,8 +34,9 @@ paths:
                   description: Target URL the browser session will navigate to on startup. Bare domains (e.g. tinyfish.ai) are automatically prefixed with https://. If omitted, the browser starts at about:blank.
                   example: https://www.tinyfish.ai
                 timeout_seconds:
-                  type: integer
-                  nullable: true
+                  type:
+                  - integer
+                  - 'null'
                   minimum: 5
                   maximum: 86400
                   description: Inactivity timeout in seconds (5–86400). If omitted, null, or greater than your plan maximum, the plan maximum is used.
@@ -106,7 +107,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -150,7 +150,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -194,7 +193,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -238,7 +236,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -282,7 +279,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code

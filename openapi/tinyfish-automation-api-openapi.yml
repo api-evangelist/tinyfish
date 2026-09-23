@@ -1,13 +1,14 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: TinyFish Browser Automation API
+  title: TinyFish Web Agent Automation API
   version: 1.0.0
-  description: Create remote browser sessions for direct Playwright/CDP control.
+  description: REST API for running AI-powered browser automations. Execute tasks on any website using natural language instructions.
   contact:
     name: TinyFish Support
     email: support@tinyfish.ai
 servers:
-- url: https://api.browser.tinyfish.ai
+- url: https://agent.tinyfish.ai
+  description: Production
 tags:
 - name: Automation
   description: Browser automation endpoints for executing tasks on websites
@@ -141,8 +142,7 @@ paths:
                   - type: boolean
                   - type: object
                     properties: {}
-                    additionalProperties:
-                      nullable: true
+                    additionalProperties: {}
                   description: Optional JSON Schema draft-07 contract for the run result.
                   example:
                     type: object
@@ -216,10 +216,10 @@ paths:
                     help_message:
                       type: string
                     result:
-                      type: object
-                      nullable: true
-                      additionalProperties:
-                        nullable: true
+                      type:
+                      - object
+                      - 'null'
+                      additionalProperties: {}
                     timestamp:
                       type: string
                   required:
@@ -275,8 +275,7 @@ paths:
                       - fetch
                     result:
                       type: array
-                      items:
-                        nullable: true
+                      items: {}
                     timestamp:
                       type: string
                   required:
@@ -331,7 +330,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -375,7 +373,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -419,7 +416,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -556,8 +552,7 @@ paths:
                   - type: boolean
                   - type: object
                     properties: {}
-                    additionalProperties:
-                      nullable: true
+                    additionalProperties: {}
                   description: Optional JSON Schema draft-07 contract for the run result.
                   example:
                     type: object
@@ -581,8 +576,9 @@ paths:
                 type: object
                 properties:
                   run_id:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: Unique identifier for the automation run
                     example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                   status:
@@ -593,32 +589,36 @@ paths:
                     description: Final status of the automation run
                     example: COMPLETED
                   started_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when the run started
                     example: '2024-01-01T00:00:00Z'
                   finished_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when the run finished
                     example: '2024-01-01T00:00:30Z'
                   num_of_steps:
-                    type: number
-                    nullable: true
+                    type:
+                    - number
+                    - 'null'
                     description: Number of steps taken during the automation. Null while the run is still in progress.
                     example: 5
                   result:
-                    type: object
-                    nullable: true
-                    additionalProperties:
-                      nullable: true
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: {}
                     description: Structured JSON result extracted from the automation. Null if the run failed.
                     example:
                       product: iPhone 15
                       price: $799
                   schema_validation:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       valid:
                         type: boolean
@@ -671,8 +671,9 @@ paths:
                         received: string
                         message: Expected number, received string
                   error:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       code:
                         type: string
@@ -692,8 +693,9 @@ paths:
                         description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
                         example: SYSTEM_FAILURE
                       retry_after:
-                        type: number
-                        nullable: true
+                        type:
+                        - number
+                        - 'null'
                         description: Suggested retry delay in seconds (null if not retryable)
                         example: 60
                       help_url:
@@ -764,7 +766,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -808,7 +809,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -852,7 +852,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -868,8 +867,9 @@ paths:
                 type: object
                 properties:
                   run_id:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: Unique identifier for the automation run
                     example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                   status:
@@ -880,32 +880,36 @@ paths:
                     description: Final status of the automation run
                     example: COMPLETED
                   started_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when the run started
                     example: '2024-01-01T00:00:00Z'
                   finished_at:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: ISO 8601 timestamp when the run finished
                     example: '2024-01-01T00:00:30Z'
                   num_of_steps:
-                    type: number
-                    nullable: true
+                    type:
+                    - number
+                    - 'null'
                     description: Number of steps taken during the automation. Null while the run is still in progress.
                     example: 5
                   result:
-                    type: object
-                    nullable: true
-                    additionalProperties:
-                      nullable: true
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: {}
                     description: Structured JSON result extracted from the automation. Null if the run failed.
                     example:
                       product: iPhone 15
                       price: $799
                   schema_validation:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       valid:
                         type: boolean
@@ -958,8 +962,9 @@ paths:
                         received: string
                         message: Expected number, received string
                   error:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       code:
                         type: string
@@ -979,8 +984,9 @@ paths:
                         description: Error category. SYSTEM_FAILURE = TinyFish issue (retry). AGENT_FAILURE = run issue (fix input). BILLING_FAILURE = out of credits (add credits). UNKNOWN = unclassified (treat as retryable).
                         example: SYSTEM_FAILURE
                       retry_after:
-                        type: number
-                        nullable: true
+                        type:
+                        - number
+                        - 'null'
                         description: Suggested retry delay in seconds (null if not retryable)
                         example: 60
                       help_url:
@@ -1157,8 +1163,7 @@ paths:
                   - type: boolean
                   - type: object
                     properties: {}
-                    additionalProperties:
-                      nullable: true
+                    additionalProperties: {}
                   description: Optional JSON Schema draft-07 contract for the run result.
                   example:
                     type: object
@@ -1182,13 +1187,15 @@ paths:
                 type: object
                 properties:
                   run_id:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
                     description: Unique identifier for the created automation run
                     example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                   error:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       code:
                         type: string
@@ -1245,7 +1252,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1289,7 +1295,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1333,7 +1338,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1377,7 +1381,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1531,8 +1534,7 @@ paths:
                   - type: boolean
                   - type: object
                     properties: {}
-                    additionalProperties:
-                      nullable: true
+                    additionalProperties: {}
                   description: Optional JSON Schema draft-07 contract applied to every run in the batch.
                   example:
                     type: object
@@ -1555,8 +1557,9 @@ paths:
                 type: object
                 properties:
                   run_ids:
-                    type: array
-                    nullable: true
+                    type:
+                    - array
+                    - 'null'
                     items:
                       type: string
                     description: Created run IDs. Null if creation failed.
@@ -1564,8 +1567,9 @@ paths:
                     - a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     - b2c3d4e5-f6a7-8901-bcde-f23456789012
                   error:
-                    type: object
-                    nullable: true
+                    type:
+                    - object
+                    - 'null'
                     properties:
                       code:
                         type: string
@@ -1624,7 +1628,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1668,7 +1671,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1712,7 +1714,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1756,7 +1757,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code

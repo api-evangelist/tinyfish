@@ -1,13 +1,14 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: TinyFish Browser Automation Vault API
+  title: TinyFish Web Agent Automation Vault API
   version: 1.0.0
-  description: Create remote browser sessions for direct Playwright/CDP control.
+  description: REST API for running AI-powered browser automations. Execute tasks on any website using natural language instructions.
   contact:
     name: TinyFish Support
     email: support@tinyfish.ai
 servers:
-- url: https://api.browser.tinyfish.ai
+- url: https://agent.tinyfish.ai
+  description: Production
 tags:
 - name: Vault
   description: Vault credential management endpoints for connecting password managers and managing stored credentials
@@ -85,8 +86,9 @@ paths:
                           type: string
                           example: cred:conn-123:Personal:item-abc123
                         connectionId:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           example: conn_123
                         label:
                           type: string
@@ -176,7 +178,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -220,7 +221,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -264,7 +264,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -308,7 +307,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -351,8 +349,9 @@ paths:
                           type: string
                           example: connected
                         lastValidatedAt:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           example: '2026-04-05T12:00:00Z'
                       required:
                       - id
@@ -397,7 +396,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -441,7 +439,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -485,7 +482,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -563,7 +559,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -607,7 +602,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -651,7 +645,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -695,7 +688,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -729,8 +721,9 @@ paths:
                           type: string
                           example: cred:conn-123:Personal:item-abc123
                         connectionId:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           example: conn_123
                         label:
                           type: string
@@ -817,7 +810,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -861,7 +853,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -905,7 +896,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -949,7 +939,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -983,8 +972,9 @@ paths:
                           type: string
                           example: cred:conn-123:Personal:item-abc123
                         connectionId:
-                          type: string
-                          nullable: true
+                          type:
+                          - string
+                          - 'null'
                           example: conn_123
                         label:
                           type: string
@@ -1091,7 +1081,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1135,7 +1124,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1179,7 +1167,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code
@@ -1223,7 +1210,6 @@ paths:
                         description: Human-readable error message
                         example: Field "url" is required and must be a string
                       details:
-                        nullable: true
                         description: Additional error details (validation errors, etc.)
                     required:
                     - code

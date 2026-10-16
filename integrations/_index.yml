@@ -19,6 +19,6 @@
     registered_name: ai.tinyfish.agent/web-agent
     register_id: ai.tinyfish.agent/web-agent
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-14'
+    detected: '2026-10-15'
   status: not-a-workflow
   arazzo: null

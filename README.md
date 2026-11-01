@@ -64,6 +64,141 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-TinyFish is a company surfaced as a portfolio company of iconiq-capital and added to the API Evangelist network as a stub for enrichment. Sector: ai. This profile is a lead awaiting the enrichment pipeline.
+TinyFish provides enterprise infrastructure for AI web agents — a unified platform that lets AI systems interact with the live web at scale. It ships four API surfaces: a Web Agent Automation API that turns natural-language goals into browser automations on real websites (sync, async, SSE-streaming, and batch), a Search API returning structured JSON from browser-rendered results, a Fetch API that converts rendered pages to clean markdown/JSON/HTML, and a Browser API for cloud CDP browser sessions with stealth/anti-bot capabilities. All APIs authenticate with an X-API-Key header, are documented at docs.tinyfish.ai with published OpenAPI specs and an llms.txt, and are exposed to assistants through an official hosted MCP server. TinyFish is the company behind the open-source AgentQL project and is backed by ICONIQ Capital.
 
-Backed by: iconiq-capital — https://www.tinyfish.ai/
+**Areas:** Company · Artificial Intelligence · AI Agents · Browser Automation · Web Scraping · Search · MCP · Data Extraction
+
+## TinyFish on APIs.io
+
+Everything profiled for TinyFish is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/tinyfish/](https://apis.io/providers/tinyfish/)** — or go straight to one of the APIs or properties below.
+
+### APIs (6)
+
+- [TinyFish Automation API](https://apis.io/apis/tinyfish/tinyfish-automation-api/) — Browser automation endpoints for executing tasks on websites
+- [TinyFish Runs API](https://apis.io/apis/tinyfish/tinyfish-runs-api/) — Endpoints for retrieving automation run data
+- [TinyFish Browser API](https://apis.io/apis/tinyfish/tinyfish-tinyfish-browser-api-api/) — The TinyFish Browser API API from TinyFish — 1 operation(s) for tinyfish browser api.
+- [TinyFish Search API](https://apis.io/apis/tinyfish/tinyfish-tinyfish-search-api-api/) — The TinyFish Search API API from TinyFish — 1 operation(s) for tinyfish search api.
+- [TinyFish Usage API](https://apis.io/apis/tinyfish/tinyfish-usage-api/) — The Usage API from TinyFish — 1 operation(s) for usage.
+- [TinyFish Vault API](https://apis.io/apis/tinyfish/tinyfish-vault-api/) — Vault credential management endpoints for connecting password managers and managing stored credentials
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Tinyfish Agent Webhooks](https://apis.io/asyncapis/tinyfish/tinyfish-agent-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [tinyfish](https://apis.io/servers/tinyfish/tinyfish/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Tinyfish Agentic Access](https://apis.io/agentic-access/tinyfish/tinyfish-agentic-access/)
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [TinyFish Browser Automation API](https://apis.io/collections/tinyfish/open-tinyfish-automation-api/)
+- [TinyFish Browser Automation Runs API](https://apis.io/collections/tinyfish/open-tinyfish-runs-api/)
+- [TinyFish Browser Automation TinyFish Browser API API](https://apis.io/collections/tinyfish/open-tinyfish-tinyfish-browser-api-api/)
+- [TinyFish Browser Automation TinyFish Fetch API API](https://apis.io/collections/tinyfish/open-tinyfish-tinyfish-fetch-api-api/)
+- [TinyFish Browser Automation TinyFish Search API API](https://apis.io/collections/tinyfish/open-tinyfish-tinyfish-search-api-api/)
+- [TinyFish Browser Automation Usage API](https://apis.io/collections/tinyfish/open-tinyfish-usage-api/)
+- [TinyFish Browser Automation Vault API](https://apis.io/collections/tinyfish/open-tinyfish-vault-api/)
+
+#### Overlays (4)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Tinyfish Browser Overlay](https://apis.io/overlays/tinyfish/tinyfish-browser-overlay/)
+- [Tinyfish Fetch Overlay](https://apis.io/overlays/tinyfish/tinyfish-fetch-overlay/)
+- [Tinyfish Main Overlay](https://apis.io/overlays/tinyfish/tinyfish-main-overlay/)
+- [Tinyfish Search Overlay](https://apis.io/overlays/tinyfish/tinyfish-search-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Tinyfish Authentication](https://apis.io/security/tinyfish/tinyfish-authentication/)
+- [Tinyfish Domain Security](https://apis.io/security/tinyfish/tinyfish-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.tinyfish.ai/)
+- [Documentation](https://docs.tinyfish.ai/)
+- [Getting started](https://docs.tinyfish.ai/quick-start)
+- [API reference](https://docs.tinyfish.ai/api-reference/)
+- [Pricing](https://pricing.tinyfish.ai/)
+- [Sign up](https://agent.tinyfish.ai/sign-up)
+- [Support](https://form.typeform.com/to/Ivk0DVRA)
+- [Blog](https://www.tinyfish.ai/blog)
+- [Terms of service](https://www.tinyfish.ai/terms)
+- [Privacy policy](https://www.tinyfish.ai/privacy-policy)
+- [GitHub](https://github.com/tinyfish-io)
+- [Status](https://tinyfish.instatus.com)
+
+## API Evangelist rating
+
+**Kin Score 46.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 59.6 |
+| Contract governance | 4.5 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 67.3 |
+| Access clarity | 39.5 |
+
+**Agent readiness 51.5** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 22.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/tinyfish/](https://apis.io/providers/tinyfish/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for TinyFish: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/tinyfish/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
